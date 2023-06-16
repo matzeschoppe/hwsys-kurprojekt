@@ -31,82 +31,65 @@
 
 declare bus PLAYER1_BUTTON_LEFT_IN, PLAYER1_BUTTON_RIGHT_IN, 
 	    PLAYER2_BUTTON_LEFT_IN, PLAYER2_BUTTON_RIGHT_IN, START_IN;
-declare bus TIME_ELAPSED_IN, --> Signal das angibt ob die zufällige Wartezeit abgelaufen ist
-            LED_IN; --> 0 = left led, 1 = right led
-declare bus LED_OUT(5:0), --> 5 = unten rechts, 4 = unten links, 3 = oben rechts, 2 = oben links, 1 = rechts, 0 = links
-			START_WAIT_OUT; 
+declare bus RND8BIT_IN(7:0); -- 8 bit from LRSR no real input
+declare bus LED_OUT(5:0); --> 5 = unten rechts, 4 = unten links, 3 = oben rechts, 2 = oben links, 1 = rechts, 0 = links
 
-declare register COUNTER(1:0), PLAYER_WON;--> 0=Player1, 1=Player2
+declare register BLINK_COUNTER(1:0), TIMER_COUNTER(16:0);
 
 -->RESET LOOP AND WAIT FOR START SIGNAL
-RESET: START_WAIT_OUT <- 0, LED_OUT(5:0) <- 0, COUNTER <- 0, if START_IN = 0 then goto RESET fi;
+RESET: LED_OUT(5:0) <- 0, BLINK_COUNTER <- 3, TIMER_COUNTER <- 0 if START_IN = 0 then goto RESET fi;
 
--->BLINK 3 TIMES
+-->BLINK 3 TIMES, no button inputs possible
 START_BLINK: 
-COUNTER(1:0) <- COUNTER(1:0) + 1, LED_OUT(5:0) <- 0;
-WAIT(500); -- Wait 0.5s
-LED_OUT(5:0) <- !LED_OUT(5:0);
-WAIT(500); -- Wait 0.5s
-if COUNTER < 3 then 
-	goto START_BLINK; 
-else
-	START_WAIT_OUT <- 1;
-fi;
--->NACH START_BLINK BIS LED AN
-LED_LOOP: 
--->BUTTON PRESSED TOO EARLY
-if TIME_ELAPSED_IN = 0 then
-	if PLAYER1_BUTTON_LEFT_IN = 1 or PLAYER1_BUTTON_RIGHT_IN = 1 then
-		PLAYER_WON <- 1;
-		goto SHOW_RESULT;
-	else if PLAYER2_BUTTON_LEFT_IN = 1 or PLAYER2_BUTTON_RIGHT_IN = 1 then
-		PLAYER_WON <- 0;
-		goto SHOW_RESULT;
-	fi;
-else if TIME_ELAPSED_IN = 1 then 
-	if LED_IN = 1 then
-		LED_OUT(1) <- 1;
-	else
-	 	LED_OUT(0) <- 1;
-	fi;
-	goto CHECK_RESULT;
-fi;
+BLINK_COUNTER(1:0) <- BLINK_COUNTER(1:0) - 1, TIMER_COUNTER(16:0) <- '00011000100000000', LED_OUT(5:0) <- 0; -- TIMER_COUNTER =0,5s
 
-goto LED_LOOP;
+500MS_LOOP1:
+TIMER_COUNTER(16:0) <- TIMER_COUNTER(16:0) - 1, if TIMER_COUNTER <> 0 then goto 500MS_LOOP1 fi;
+
+LED_OUT(5:0) <- !LED_OUT(5:0), TIMER_COUNTER(16:0) <- '00011000100000000';
+
+500MS_LOOP2:
+TIMER_COUNTER(16:0) <- TIMER_COUNTER(16:0) - 1, if TIMER_COUNTER <> 0 then goto 500MS_LOOP2 fi;
+
+if BLINK_COUNTER <> 0 then goto START_BLINK fi; 
+
+TIMER_COUNTER(16:14) <- RND8BIT_IN(2:0), TIMER_COUNTER(13:0) <- '11000100000000';
+WAIT_RANDOM:-- WAIT RANDOM TIME and check for button input too early
+if PLAYER1_BUTTON_LEFT_IN = 1 or PLAYER1_BUTTON_RIGHT_IN = 1 then goto PLAYER2_WON 
+else if PLAYER2_BUTTON_LEFT_IN = 1 or PLAYER2_BUTTON_RIGHT_IN = 1 then PLAYER1_WON fi, -- , for parallel execution is necessary
+TIMER_COUNTER(16:0) <- TIMER_COUNTER(16:0) - 1, if TIMER_COUNTER <> 0 then goto WAIT_RANDOM fi;
+
+if RND8BIT_IN(7) = 1 then goto SET_LEFT_LED else goto SET_RIGHT_LED fi;
+
+SET_LEFT_LED:
+LED_OUT(0) <- 1, goto CHECK_RESULT;
+
+SET_RIGHT_LED:
+LED_OUT(1) <- 1, goto CHECK_RESULT;
 
 
 -->USER INPUT ÜBERPRÜFEN
 CHECK_RESULT:
--->WRONG BUTTONS PRESSED
-if LED_IN = 1 then
-	if PLAYER1_BUTTON_LEFT_IN then
-		PLAYER_WON <- 1, 
-		goto SHOW_RESULT;
-	else if PLAYER2_BUTTON_LEFT_IN = 1 then
-		PLAYER_WON <- 0,
-		goto SHOW_RESULT;
-	fi;
--->RIGHT BUTTONS PRESSED
-else if LED_IN = 0 then
-	if PLAYER1_BUTTON_LEFT_IN then
-		PLAYER_WON <- 0, 
-		goto SHOW_RESULT;
-	else if PLAYER2_BUTTON_LEFT_IN = 1 then
-		PLAYER_WON <- 1,
-		goto SHOW_RESULT;
-	fi;
+if (RND8BIT_IN(7) = 1) --> (BIT IS HIGH --> LEFT LED ON --> LEFT BUTTONS NEED TO BE PRESSED)
+	if PLAYER1_BUTTON_LEFT_IN = 1 or PLAYER2_BUTTON_RIGHT_IN = 1 then goto PLAYER1_WON --> PLAYER1 WIN CONDITION
+	else if PLAYER1_BUTTON_RIGHT_IN = 1 or PLAYER2_BUTTON_LEFT_IN = 1 then goto PLAYER2_WON --> PLAYER2 WIN CONDITION
+else -->(BIT IS LOW --> RIGHT LED ON --> RIGHT BUTTONS NEED TO BE PRESSED)
+	if PLAYER1_BUTTON_RIGHT_IN = 1 or PLAYER2_BUTTON_LEFT_IN = 1 then goto PLAYER1_WON; --> PLAYER1 WIN CONDITION
+	else if PLAYER1_BUTTON_LEFT_IN = 1 or PLAYER2_BUTTON_RIGHT_IN = 1 then goto PLAYER2_WON; --> PLAYER2 WIN CONDITION
 fi;
+goto CHECK_RESULT; --> stay in loop until button was pressed
 
-goto CHECK_RESULT;
 
-
-SHOW_RESULT:
+PLAYER1_WON: 
 LED_OUT(5:0) <- 0;
-if PLAYER_WON = 0 then
-	LED_OUT(3:2) <- 3;
-else if PLAYER_WON = 1 then
-	LED_OUT(5:4) <- 3;
-fi;
+LED_OUT(3:2) <- 3, goto WAIT_TIME;
 
-WAIT(1000); -- Wait 1s
+PLAYER2_WON:
+LED_OUT(5:0) <- 0;
+LED_OUT(5:4) <- 3, goto WAIT_TIME;
+
+WAIT_TIME: --init 3s wait counter
+TIMER_COUNTER(16:0) <- '10010100000000000';--> ~75.000 --> 3s wait time
+3S_LOOP:-- loop until time elapsed
+TIMER_COUNTER(16:0) <- TIMER_COUNTER(16:0) - 1, if TIMER_COUNTER <> 0 then goto 3S_LOOP fi;
 goto RESET;
