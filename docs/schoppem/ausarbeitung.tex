@@ -42,113 +42,114 @@
 \title{Titel der Arbeit}
 \author{Name des Authors}
 \date{\today}
-\setcounter{section}{0}
-\setcounter{secnumdepth}{3}
 \definecolor{fhorange}{RGB}{255,153,0}
 \begin{document}
-
-\begin{titlepage}
-	\thispagestyle{empty}
-	\begin{center}
-		\begin{minipage}{15cm}
-			\begin{flushright}
-				\includegraphics[width=4cm]{fhlogo.png} \hspace{1.5cm} \\
-				\textbf{\large Hochschule \hspace{3.5cm} ~ \\ Augsburg } \large University of \hspace{1cm} ~ \\ Applied Sciences \hspace{0.2cm} ~
-				\\~
-			\end{flushright}
-			
-			\begin{flushleft}
-				\textbf{\large \textcolor{fhorange}{Ausarbeitung}} \hspace{7.7cm} \textcolor{fhorange}{\large Fakultät für}
-				\vspace{0.1cm}
-				\\~  \hspace{10.75cm} \textcolor{fhorange}{\large Informatik} 
-			\end{flushleft}
-			
-			%\vspace{1cm}
-			\begin{flushleft}
-				{ \large Studienrichtung \\ 
-					%	\vspace{0.2cm}
-					M.Sc. Informatik
-				}
-				\vspace{0.1cm}
-			\end{flushleft}
-			\begin{flushleft}
-				{
-					\textcolor{fhorange}{\large \textbf{Mathias Schoppe \\
-							Entwicklun eines integrierten Schaltkreises - Konzeptionierung und Umsetzung}}
-				}
-				\vspace{0.2cm}
-			\end{flushleft}
-			\begin{flushleft}
-				{ \large Abgabe bei: Prof. Dr.-Ing. Gundolf Kiefer \\ 
+	
+	\begin{titlepage}
+		\thispagestyle{empty}
+		\begin{center}
+			\begin{minipage}{15cm}
+				\begin{flushright}
+					\includegraphics[width=4cm]{fhlogo.png} \hspace{1.5cm} \\
+					\textbf{\large Hochschule \hspace{3.5cm} ~ \\ Augsburg } \large University of \hspace{1cm} ~ \\ Applied Sciences \hspace{0.2cm} ~
+					\\~
+				\end{flushright}
+				
+				\begin{flushleft}
+					\textbf{\large \textcolor{fhorange}{Hardwaresysteme\\Kürprojekt}} \hspace{8.35cm} \textcolor{fhorange}{\large Fakultät für}
 					\vspace{0.1cm}
-					Abgabe der Arbeit am: 09.07.2023 			
-				}
-			\end{flushleft}
-			\begin{flushleft}
-				%In Kooperation mit Firma: \\ Hsa-Digit \\ Betreuer: Hans Mustermann \\ 
-				%\vspace{0.5cm}
-				%\includegraphics[width=3cm]{hsa_digit.png} \hspace{5cm} 
-				\tiny{\textcolor{gray}{
-						\hspace{11.3cm} Hochschule für angewandte \\
-						\hspace{11.3cm} Wissenschaften Augsburg \\
-						\hspace{11.3cm} University of Applied Sciences \\ ~ \\
-						\hspace{11.3cm} An der Hochschule 1 \\
-						\hspace{11.3cm} D-86161 Augsburg \\ ~ \\
-						\hspace{11.3cm} Telefon +49 821 55 86-0 \\
-						\hspace{11.3cm} Fax +49 821 55 86-3222 \\
-						\hspace{11.3cm} www.hs-augsburg.de \\
-						\hspace{11.3cm} info@hs-augsburg.de \\} ~ \\
-					\hspace{11.3cm} Fakultät für Informatik \\
-					\hspace{11.3cm} Telefon +49 821 5586-3450 \\
-					\hspace{11.3cm} Fax ~~~ +49 821 5586-3499 \\ ~ \\
-					\hspace{11.3cm} Verfasser der Ausarbeitung: \\
-					\hspace{11.3cm} Mathias Schoppe \\
-					\hspace{11.3cm} mathias.schoppe@hs-augsburg.de \\
-				}
-			\end{flushleft}
-		\end{minipage}
-	\end{center}
-\end{titlepage}
-
-
-% Zusammenfassung
-\thispagestyle{empty}
-\section*{Abstract}
-\newpage
-\tableofcontents  
-% Wenn das Inhaltsverzeichnis aktualisiert werden muss 2 mal kompilieren, erst dann wird die Aktualisierung angezeigt
-\newpage
-\pagenumbering{arabic}
-\section{Einleitung}
-\subsection{Motivation}
-\subsection{Zielsetzung}
-
-\section{Grundlagen}
-\subsection{Linear rückgekoppeltes Schieberegister}
-\subsection{Hardware Timer}
-
-\section{Konzept}
-\subsection{Schaltkreis Entwurf}
-\subsubsection{Systemebene}
-%Generelles Konzept und Programmablauf (Ablaufdiagramm)
-\subsubsection{Register-Transfer-Ebene}
-%Algorithmus (Beschreibungssprache)
-\subsubsection{Gatter-Ebene}
-%Strukturdiagramm
-
-
-\section{Umsetzung}
-\subsection{Implementierung}
-%Wokwi/Vhdl programm vorstellen
-\
-
-\section{Bewertung}
-\subsection{Zieleinhaltung}
-\subsection{Interpretation der Ergebnisse}
-
-\section{Zusammenfassung und Ausblick}
-
-
-
-
+					\\~  \hspace{10.75cm} \textcolor{fhorange}{\large Informatik} 
+				\end{flushleft}
+				
+				%\vspace{1cm}
+				\begin{flushleft}
+					{ \large Studienrichtung \\ 
+						%	\vspace{0.2cm}
+						M.Sc. Informatik
+					}
+					\vspace{0.1cm}
+				\end{flushleft}
+				\begin{flushleft}
+					{
+						\textcolor{fhorange}{\large \textbf{Mathias Schoppe \\
+								Entwicklun eines integrierten Schaltkreises - Konzeptionierung und Umsetzung}}
+					}
+					\vspace{0.2cm}
+				\end{flushleft}
+				\begin{flushleft}
+					{ \large Abgabe bei: Prof. Dr.-Ing. Gundolf Kiefer \\ 
+						\vspace{0.1cm}
+						Abgabe der Arbeit am: 09.07.2023 			
+					}
+				\end{flushleft}
+				\begin{flushleft}
+					%In Kooperation mit Firma: \\ Hsa-Digit \\ Betreuer: Hans Mustermann \\ 
+					%\vspace{0.5cm}
+					%\includegraphics[width=3cm]{hsa_digit.png} \hspace{5cm} 
+					\tiny{\textcolor{gray}{
+							\hspace{11.3cm} Hochschule für angewandte \\
+							\hspace{11.3cm} Wissenschaften Augsburg \\
+							\hspace{11.3cm} University of Applied Sciences \\ ~ \\
+							\hspace{11.3cm} An der Hochschule 1 \\
+							\hspace{11.3cm} D-86161 Augsburg \\ ~ \\
+							\hspace{11.3cm} Telefon +49 821 55 86-0 \\
+							\hspace{11.3cm} Fax +49 821 55 86-3222 \\
+							\hspace{11.3cm} www.hs-augsburg.de \\
+							\hspace{11.3cm} info@hs-augsburg.de \\} ~ \\
+						\hspace{11.3cm} Fakultät für Informatik \\
+						\hspace{11.3cm} Telefon +49 821 5586-3450 \\
+						\hspace{11.3cm} Fax ~~~ +49 821 5586-3499 \\ ~ \\
+						\hspace{11.3cm} Verfasser der Ausarbeitung: \\
+						\hspace{11.3cm} Mathias Schoppe \\
+						\hspace{11.3cm} mathias.schoppe@hs-augsburg.de \\
+					}
+				\end{flushleft}
+			\end{minipage}
+		\end{center}
+	\end{titlepage}
+	
+	
+	% Zusammenfassung
+	\thispagestyle{empty}
+	\section*{Abstract}
+	\newpage
+	\thispagestyle{empty}
+	\tableofcontents  
+	% Wenn das Inhaltsverzeichnis aktualisiert werden muss 2 mal kompilieren, erst dann wird die Aktualisierung angezeigt
+	\newpage
+	\pagenumbering{arabic}
+	\section{Einleitung}
+	\subsection{Motivation}
+	\subsection{Zielsetzung}
+	
+	\section{Grundlagen}
+	\subsection{Linear rückgekoppeltes Schieberegister}
+	\subsection{Hardware Timer}
+	% Nicht Konzept und umsetzung, sondern Register-Transfer-Ebene, Gatter-Ebene, Verdrahtung+Platzierung
+	%Implementierung + Validierung
+	
+	\section{Konzept}
+	\subsection{Schaltkreis Entwurf}
+	\subsubsection{Systemebene}
+	%Generelles Konzept und Programmablauf (Ablaufdiagramm)
+	\subsubsection{Register-Transfer-Ebene}
+	%Algorithmus (Beschreibungssprache)
+	\subsubsection{Gatter-Ebene}
+	%Strukturdiagramm
+	
+	
+	\section{Umsetzung}
+	\subsection{Implementierung}
+	%Wokwi/Vhdl programm vorstellen
+	\
+	
+	\section{Bewertung}
+	\subsection{Zieleinhaltung}
+	\subsection{Interpretation der Ergebnisse}
+	
+	\section{Zusammenfassung und Ausblick}
+	
+	
+	
+	
 \end{document}
