@@ -1,0 +1,34 @@
+digraph StateTransitionDiagram {
+    rankdir=LR;  // Set the direction from left to right (LR)
+
+    // Define the states
+    reset [shape=doublecircle, label="RESET"];
+    blink3Times [shape=circle, label="blink3Times"];
+    waitRndInit [shape=circle, label="waitRndInit\ntimer_init_rand <= '1'"];
+    waitRnd[shape=circle, label="waitRnd\ntimer_decr<='1'"];
+    setLeftLED[shape=circle, label="setLeftLED\nleds_out(0)<='1'"];
+    setRightLED[shape=circle, label="setRightLED"];
+    p1Won[shape=circle, label="p1Won\nleds_out(3:2)<='11'"];
+    p2Won[shape=circle, label="p2Won\nleds_out(5:4)<='11'"];
+
+    reset -> reset[label="start_btn_in=0"];
+    reset -> blink3Times[label="start_btn_in=1"];
+    blink3Times -> waitRndInit[label="blink_done=1"];
+    blink3Times -> blink3Times[label="else"];
+    waitRndInit -> waitRnd[label=""];
+    waitRnd -> waitRnd[label="else"];
+    waitRnd -> setLeftLED[label="timer_counter=0 && rnd_8bit(7)=1"];
+    waitRnd -> setRightLED[label="timer_counter=0 && rnd_8bit(7)=0"];
+    waitRnd -> p1Won[label="p2_btn_left_in=1 || p2_btn_right_in=1"];
+    waitRnd -> p2Won[label="p1_btn_left_in=1 || p1_btn_right_in=1"];
+    setLeftLED -> setLeftLED[label="else"];
+    setLeftLED -> p1Won[label="p1_btn_left_in=1 || p2_btn_right_in=1"];
+    setLeftLED -> p2Won[label="p1_btn_right_in=1 || p2_btn_left_in=1"];
+    setRightLED -> setRightLED[label="else"];
+    setRightLED -> p1Won[label="p1_btn_right_in=1 || p2_btn_left_in=1"];
+    setRightLED -> p2Won[label="p1_btn_left_in=1 || p2_btn_right_in=1"];
+    p1Won -> blink3Times[label="start_btn_in=1"];
+    p1Won -> p1Won[label="else"];
+    p2Won -> blink3Times[label="start_btn_in=1"];
+    p2Won -> p2Won[label="else"];
+}

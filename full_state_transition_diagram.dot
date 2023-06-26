@@ -1,0 +1,56 @@
+digraph StateTransitionDiagram {
+    rankdir=LR;  // Set the direction from left to right (LR)
+
+    // Define the states
+    reset [shape=doublecircle, label="RESET"];
+    blinkOn1 [shape=circle, label="blinkOn1\nleds_out<='111111'"];
+    blinkOn2 [shape=circle, label="blinkOn2\nleds_out<='111111'"];
+    blinkOn3 [shape=circle, label="blinkOn3\nleds_out<='111111'"];
+    blinkOff1 [shape=circle, label="blinkOff1\nleds_out<='00000'"];
+    blinkOff2 [shape=circle, label="blinkOff2\nleds_out<='00000'"];
+    blinkOff3 [shape=circle, label="blinkOff3\nleds_out<='00000'"];
+    blinkChange1 [shape=circle, label="blinkChange1\ntimer_init_500msec <= '1'"];
+    blinkChange2 [shape=circle, label="blinkChange2\ntimer_init_500msec <= '1'"];
+    blinkChange3 [shape=circle, label="blinkChange3\ntimer_init_500msec <= '1'"];
+    blinkChange4 [shape=circle, label="blinkChange4\ntimer_init_500msec <= '1'"];
+    blinkChange5 [shape=circle, label="blinkChange5\ntimer_init_500msec <= '1'"];
+    waitRndInit [shape=circle, label="waitRndInit\ntimer_init_rand <= '1'"];
+    waitRnd[shape=circle, label="waitRnd\ntimer_decr<='1'"];
+    setLeftLED[shape=circle, label="setLeftLED\nleds_out(0)<='1'"];
+    setRightLED[shape=circle, label="setRightLED"];
+    p1Won[shape=circle, label="p1Won\nleds_out(3:2)<='11'"];
+    p2Won[shape=circle, label="p2Won\nleds_out(5:4)<='11'"];
+
+    reset -> reset[label="start_btn_in=0"];
+    reset -> blinkOn1[label="start_btn_in=1"];
+    blinkOn1 -> blinkChange1[label="timer_counter=0"];
+    blinkOn1 -> blinkOn1[label="else\n timer_decr<='1'"];
+    blinkChange1 -> blinkOff1[label=""];
+    blinkOff1 -> blinkChange2[label="timer_counter=0"];
+    blinkOff1 -> blinkOff1[label="else\n timer_decr<='1'"];
+    blinkChange2 -> blinkOn2[label=""];
+    blinkOn2 -> blinkChange3[label="timer_counter=0"];
+    blinkOn2 -> blinkOn2[label="else\n timer_decr<='1'"];
+    blinkChange3 -> blinkOff2[label=""];
+    blinkOff2 -> blinkChange4[label="timer_counter=0"];
+    blinkOff2 -> blinkOff2[label="else\n timer_decr<='1'"];
+    blinkChange4 -> blinkOn3[label=""];
+    blinkOn3 -> blinkChange5[label="timer_counter=0"];
+    blinkOn3 -> blinkOn3[label="else\n timer_decr<='1'"];
+    blinkChange5 -> blinkOff3[label=""];
+    blinkOff3 -> waitRndInit[label="timer_counter=0"];
+    blinkOff3 -> blinkOff3[label="else\n timer_decr<='1'"];
+    waitRndInit -> waitRnd[label=""];
+    waitRnd -> setLeftLED[label="timer_counter=0 && rnd_8bit(7)=1"];
+    waitRnd -> setRightLED[label="timer_counter=0 && rnd_8bit(7)=0"];
+    waitRnd -> p1Won[label="p2_btn_left_in=1 || p2_btn_right_in=1"];
+    waitRnd -> p2Won[label="p1_btn_left_in=1 || p1_btn_right_in=1"];
+    setLeftLED -> p1Won[label="p1_btn_left_in=1 || p2_btn_right_in=1"];
+    setLeftLED -> p2Won[label="p1_btn_right_in=1 || p2_btn_left_in=1"];
+    setRightLED -> p1Won[label="p1_btn_right_in=1 || p2_btn_left_in=1"];
+    setRightLED -> p2Won[label="p1_btn_left_in=1 || p2_btn_right_in=1"];
+    p1Won -> blinkOn1[label="start_btn_in=1"];
+    p1Won -> p1Won[label="else"];
+    p2Won -> blinkOn1[label="start_btn_in=1"];
+    p2Won -> p2Won[label="else"];
+}
