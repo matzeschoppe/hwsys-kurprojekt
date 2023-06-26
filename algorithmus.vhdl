@@ -183,9 +183,9 @@ BEGIN
 						next_state <= s_SetRightLED;
 					end if;
 				ELSIF p1_btn_left_in = '1' or p1_btn_right_in = '1' then 
-					next_state <= s_p2Won;
+					next_state <= s_P2Won;
 				ELSIF  p2_btn_left_in = '1' or p2_btn_right_in = '1' then 
-					next_state <= s_p1Won;
+					next_state <= s_P1Won;
 				END IF;
 
 			WHEN s_SetLeftLED =>
