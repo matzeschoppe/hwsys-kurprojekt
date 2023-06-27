@@ -8,7 +8,7 @@ ENTITY ALGORITHMUS IS
 		reset: IN STD_LOGIC;
 		p1_btn_left_in, p1_btn_right_in, p2_btn_left_in, p2_btn_right_in, start_btn_in : IN STD_LOGIC;
 		leds_out : out STD_LOGIC_VECTOR(5 DOWNTO 0)
-		  );
+		);
 END ALGORITHMUS;
 
 

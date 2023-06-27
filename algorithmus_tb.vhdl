@@ -23,7 +23,7 @@ architecture TESTBENCH of ALGORITHMUS_TB is
     end component;
 
     --Clock period
-    constant period: time:= 25 ms; --25khz Clock frequency
+    constant period: time:= 40 ns; --25khz Clock frequency
 
     -- Signals
     signal clk, reset std_logic := '0';
@@ -52,6 +52,9 @@ architecture TESTBENCH of ALGORITHMUS_TB is
             -- run enough cycle for blinking to be over
             -- test what happens on button press during wait
             -- test what happens
+            n := 0;
+            while n <  loop
 
+            end loop;
         end process;
 end TESTBENCH;
