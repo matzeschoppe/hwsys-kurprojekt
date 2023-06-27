@@ -7,7 +7,7 @@ entity RANDOM_TB is
 end RANDOM_TB;
 
 
-architecture TESTBENCH of ALGORITHMUS_TB is
+architecture TESTBENCH of RANDOM_TB is
     -- Declare CPU component (Unit Under Test - UUT)
     component RANDOM is
         port (
