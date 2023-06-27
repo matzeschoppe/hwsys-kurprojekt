@@ -14,7 +14,7 @@ END RANDOM;
 
 ARCHITECTURE RTL OF RANDOM IS
 
-    signal lrsr: std_logic_vector(7 downto 0);
+    signal lrsr: std_logic_vector(7 downto 0) := "01110100"; --seed = 74 (Zufallszahl)
 BEGIN
 
 	
