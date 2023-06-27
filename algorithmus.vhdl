@@ -33,6 +33,9 @@ ARCHITECTURE RTL OF ALGORITHMUS IS
 	SIGNAL state, next_state : t_state;
 	
 	signal timer_init_500msec, timer_decr, timer_init_rand: std_logic;
+
+	--configuration of random
+	for all: RANDOM use entity WORK.RANDOM(RTL);
     
 BEGIN
 
@@ -158,7 +161,7 @@ BEGIN
 				
 			WHEN s_blinkChange5 =>
 				timer_init_500msec <= '1';
-				next_state <= s_blinkOn3;
+				next_state <= s_blinkOff3;
 				
 			WHEN s_blinkOff3 =>
 				leds_out <= (others => '0');
@@ -205,13 +208,13 @@ BEGIN
 				end if;
 
 			WHEN s_P1Won =>
-			    leds_out(3 downto 2) <= "11";
+			    leds_out <= "001100";
 			    if start_btn_in = '1' then
 					next_state <= s_blinkOn1;
 				end if;
 
 			WHEN s_P2Won =>
-			    leds_out(5 downto 4) <= "11";
+			    leds_out <= "110000";
 			    if start_btn_in = '1' then
 					next_state <= s_blinkOn1;
 				end if;
