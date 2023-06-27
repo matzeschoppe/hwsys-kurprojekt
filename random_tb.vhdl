@@ -17,6 +17,10 @@ architecture TESTBENCH of RANDOM_TB is
         );
     end component;
 
+	-- configuration
+	--RTL muss ggf. noch geändert werden
+	for IMPL: RANDOM use entity WORK.RANDOM(RTL);
+
     --Clock period
     constant period: time:= 40 ns; --25khz Clock frequency
 
@@ -40,43 +44,45 @@ architecture TESTBENCH of RANDOM_TB is
             begin
             reset <= '1'; 
             run_cycle;
+            reset <= '0'; 
+            -- bitfolge :   "76543210"
             --initial seed: "01110100" -- XOR Rückkopplung: 0
             assert rnd_8bit_out = "01110100" report "Cycle 1 - Reset fehlgeschlagen";
             run_cycle;
-            --nach 1 cycle: "00111010" -- XOR Rückkopplung: 0
-            assert rnd_8bit_out = "00111010" report "Cycle 2 - fehlgeschlagen";
+            --nach 1 cycle: "11101000" -- XOR Rückkopplung: 1
+            assert rnd_8bit_out = "11101000" report "Cycle 2 - fehlgeschlagen";
             run_cycle;
-            --nach 2 cycle: "00011101" -- XOR Rückkopplung: 0
-            assert rnd_8bit_out = "00011101" report "Cycle 3 - fehlgeschlagen";
+            --nach 1 cycle: "11010001" -- XOR Rückkopplung: 0
+            assert rnd_8bit_out = "11010001" report "Cycle 3 - fehlgeschlagen";
             run_cycle;
-            --nach 3 cycle: "00001110" -- XOR Rückkopplung: 0
-            assert rnd_8bit_out = "00001110" report "Cycle 4 - fehlgeschlagen";
+            --nach 1 cycle: "10100010" -- XOR Rückkopplung: 0
+            assert rnd_8bit_out = "10100010" report "Cycle 4 - fehlgeschlagen";
             run_cycle;
-            --nach 4 cycle: "00000111" -- XOR Rückkopplung: 0
-            assert rnd_8bit_out = "00000111" report "Cycle 5 - fehlgeschlagen";
+            --nach 1 cycle: "01000100" -- XOR Rückkopplung: 0
+            assert rnd_8bit_out = "01000100" report "Cycle 5 - fehlgeschlagen";
             run_cycle;
-            --nach 5 cycle: "00000011" -- XOR Rückkopplung: 1
-            assert rnd_8bit_out = "00000011" report "Cycle 6 - fehlgeschlagen";
+            --nach 1 cycle: "10001000" -- XOR Rückkopplung: 0
+            assert rnd_8bit_out = "10001000" report "Cycle 6 - fehlgeschlagen";
             run_cycle;
-            --nach 6 cycle: "10000001" -- XOR Rückkopplung: 1
-            assert rnd_8bit_out = "10000001" report "Cycle 7 - fehlgeschlagen";
+            --nach 1 cycle: "00010000" -- XOR Rückkopplung: 1
+            assert rnd_8bit_out = "00010000" report "Cycle 7 - fehlgeschlagen";
             run_cycle;
-            --nach 7 cycle: "11000000" -- XOR Rückkopplung: 0
-            assert rnd_8bit_out = "11000000" report "Cycle 8 - fehlgeschlagen";
+            --nach 1 cycle: "00100001" -- XOR Rückkopplung: 1
+            assert rnd_8bit_out = "00100001" report "Cycle 8 - fehlgeschlagen";
             run_cycle;
-            --nach 8 cycle: "01100000" -- XOR Rückkopplung: 0
-            assert rnd_8bit_out = "01100000" report "Cycle 9 - fehlgeschlagen";
+            --nach 1 cycle: "01000011" -- XOR Rückkopplung: 0
+            assert rnd_8bit_out = "01000011" report "Cycle 9 - fehlgeschlagen";
             run_cycle;
-            --nach 9 cycle: "00110000" -- XOR Rückkopplung: 1
-            assert rnd_8bit_out = "00110000" report "Cycle 10 - fehlgeschlagen";
+            --nach 1 cycle: "10000110" -- XOR Rückkopplung: 1
+            assert rnd_8bit_out = "10000110" report "Cycle 10 - fehlgeschlagen";
             run_cycle;
-            --nach 10 cycle: "10011000" -- XOR Rückkopplung: 0
-            assert rnd_8bit_out = "10011000" report "Cycle 11 - fehlgeschlagen";
+            --nach 1 cycle: "00001101" -- XOR Rückkopplung: 1
+            assert rnd_8bit_out = "00001101" report "Cycle 11 - fehlgeschlagen";
             run_cycle;
 
             -- Print a note & finish simulation now
 		    assert false report "Simulation finished" severity note;
 		    wait;               -- end simulation
 
-            end process;
+        end process;
 end TESTBENCH;
