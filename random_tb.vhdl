@@ -21,8 +21,8 @@ architecture TESTBENCH of ALGORITHMUS_TB is
     constant period: time:= 40 ns; --25khz Clock frequency
 
     --signals
-    clk, reset: STD_LOGIC;
-    rnd_8bit_out : STD_LOGIC_VECTOR(7 DOWNTO 0);
+    signal clk, reset: STD_LOGIC;
+    signal rnd_8bit_out : STD_LOGIC_VECTOR(7 DOWNTO 0);
 
     begin
         -- port map
