@@ -51,13 +51,13 @@ architecture TESTBENCH of ALGORITHMUS_TB is
             run_cycle;
             --nach 3 cycle: "00001110" -- XOR Rückkopplung: 0
             assert rnd_8bit_out = "00001110" report "Cycle 4 - fehlgeschlagen";
-            run cycle;
+            run_cycle;
             --nach 4 cycle: "00000111" -- XOR Rückkopplung: 0
             assert rnd_8bit_out = "00000111" report "Cycle 5 - fehlgeschlagen";
-            run cycle;
+            run_cycle;
             --nach 5 cycle: "00000011" -- XOR Rückkopplung: 1
             assert rnd_8bit_out = "00000011" report "Cycle 6 - fehlgeschlagen";
-            run cycle;
+            run_cycle;
             --nach 6 cycle: "10000001" -- XOR Rückkopplung: 1
             assert rnd_8bit_out = "10000001" report "Cycle 7 - fehlgeschlagen";
             run_cycle;
