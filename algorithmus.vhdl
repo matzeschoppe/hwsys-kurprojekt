@@ -8,8 +8,8 @@ ENTITY ALGORITHMUS IS
 			rst_n: IN STD_LOGIC;
 			uio_in: IN STD_LOGIC_VECTOR (7 DOWNTO 0);
 			uio_oe: out STD_LOGIC_VECTOR (7 DOWNTO 0);
-			uo_out : out STD_LOGIC_VECTOR(7 DOWNTO 0)
-			ena : in STD_LOGIC;
+			uo_out : out STD_LOGIC_VECTOR(7 DOWNTO 0);
+			ena : in STD_LOGIC
 		);
 END ALGORITHMUS;
 
@@ -72,7 +72,7 @@ BEGIN
 	PROCESS(clk)
 	BEGIN
 		IF rising_edge(clk) THEN
-			uio_oe <= '0'; --set all as inputs
+			uio_oe <= "00000000"; --set all as inputs
 			p1_btn_left_in 	<= uio_in(0);
 			p1_btn_right_in <= uio_in(1); 
 			p2_btn_left_in 	<= uio_in(2);
@@ -225,13 +225,13 @@ BEGIN
 				end if;
 
 			WHEN s_P1Won =>
-			    leds_out <= '1100011';--segments: a,b,f,g
+			    leds_out <= "01100011";--segments: a,b,f,g
 			    if start_btn_in = '1' then
 					next_state <= s_blinkOn1;
 				end if;
 
 			WHEN s_P2Won =>
-			    leds_out <= '1011100';--segments: c,d,e,g
+			    leds_out <= "01011100";--segments: c,d,e,g
 			    if start_btn_in = '1' then
 					next_state <= s_blinkOn1;
 				end if;
