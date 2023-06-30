@@ -12,7 +12,7 @@ architecture TESTBENCH of RANDOM_TB is
     component RANDOM is
         port (
             clk : IN STD_LOGIC;
-            reset : IN STD_LOGIC;
+            rst_n : IN STD_LOGIC;
             rnd_8bit_out : OUT STD_LOGIC_VECTOR(7 DOWNTO 0)
         );
     end component;
@@ -25,12 +25,12 @@ architecture TESTBENCH of RANDOM_TB is
     constant period: time:= 40 us; --25khz Clock frequency
 
     --signals
-    signal clk, reset: STD_LOGIC;
+    signal clk, rst_n: STD_LOGIC;
     signal rnd_8bit_out : STD_LOGIC_VECTOR(7 DOWNTO 0);
 
     begin
         -- port map
-        IMPL: RANDOM port map( clk => clk, reset => reset, rnd_8bit_out => rnd_8bit_out);
+        IMPL: RANDOM port map( clk => clk, rst_n => rst_n, rnd_8bit_out => rnd_8bit_out);
         process
             -- helper to perform clock cycle
             procedure run_cycle is 
@@ -77,9 +77,9 @@ architecture TESTBENCH of RANDOM_TB is
             --nach 1 cycle: "00001101" -- XOR Rückkopplung: 1
             assert rnd_8bit_out = "00001101" report "Cycle 10 - fehlgeschlagen";
             run_cycle;
-            reset<='1';
+            rst_n<='1';
             run_cycle;
-            reset<='0';
+            rst_n<='0';
             assert rnd_8bit_out = "01110100" report "Reset fehlgeschlagen";
 
             -- Print a note & finish simulation now
