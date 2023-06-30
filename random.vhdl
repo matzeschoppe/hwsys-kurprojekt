@@ -5,7 +5,7 @@ USE IEEE.numeric_std.ALL;
 ENTITY RANDOM IS
 	PORT (
 		clk : IN STD_LOGIC;
-		reset : IN STD_LOGIC;
+		rst_n : IN STD_LOGIC;
 		rnd_8bit_out : OUT STD_LOGIC_VECTOR(7 DOWNTO 0)
 	);
 END RANDOM;
@@ -22,7 +22,7 @@ BEGIN
 	PROCESS (clk) -- Zustand und alle Status-Signale in Sensitiviaetsliste 
 	BEGIN
 		IF rising_edge (clk) THEN
-			IF reset = '1' THEN
+			IF rst_n = '1' THEN
 				lrsr <= "01110100";  --seed = 74 (Zufallszahl)
 			ELSE
 				lrsr(1) <= lrsr(0);

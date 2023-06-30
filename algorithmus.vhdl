@@ -3,11 +3,13 @@ USE IEEE.std_logic_1164.ALL;
 USE IEEE.numeric_std.ALL;
 
 ENTITY ALGORITHMUS IS
-	PORT (
-		clk : IN STD_LOGIC; -- 25 kHz
-		reset: IN STD_LOGIC;
-		p1_btn_left_in, p1_btn_right_in, p2_btn_left_in, p2_btn_right_in, start_btn_in : IN STD_LOGIC;
-		leds_out : out STD_LOGIC_VECTOR(5 DOWNTO 0)
+	PORT(
+			clk : IN STD_LOGIC; -- 25 kHz
+			rst_n: IN STD_LOGIC;
+			uio_in: IN STD_LOGIC_VECTOR (7 DOWNTO 0);
+			uio_oe: out STD_LOGIC_VECTOR (7 DOWNTO 0);
+			uo_out : out STD_LOGIC_VECTOR(7 DOWNTO 0)
+			ena : in STD_LOGIC;
 		);
 END ALGORITHMUS;
 
@@ -18,7 +20,7 @@ ARCHITECTURE RTL OF ALGORITHMUS IS
 	COMPONENT RANDOM IS
 		PORT (
 			clk : IN STD_LOGIC;
-			reset : IN STD_LOGIC;
+			rst_n : IN STD_LOGIC;
 			rnd_8bit_out : OUT STD_LOGIC_VECTOR(7 DOWNTO 0) 
 		);
 	END COMPONENT;
@@ -32,7 +34,9 @@ ARCHITECTURE RTL OF ALGORITHMUS IS
 	s_SetRightLED, s_P1Won, s_P2Won);
 	SIGNAL state, next_state : t_state;
 	
-	signal timer_init_500msec, timer_decr, timer_init_rand: std_logic;
+	signal timer_init_500msec, timer_decr, timer_init_rand: STD_LOGIC;
+	signal leds_out: STD_LOGIC_VECTOR(7 DOWNTO 0);
+	signal p1_btn_left_in, p1_btn_right_in, p2_btn_left_in, p2_btn_right_in, start_btn_in: STD_LOGIC;
 
 	--configuration of random
 	for all: RANDOM use entity WORK.RANDOM(RTL);
@@ -42,7 +46,7 @@ BEGIN
     I_RANDOM: component RANDOM
     port map (
       clk   => clk,
-      reset => reset,
+      rst_n => rst_n,
       rnd_8bit_out => rnd_8bit
     );
 
@@ -65,11 +69,24 @@ BEGIN
 		END IF;
 	END PROCESS;
 
+	PROCESS(clk)
+	BEGIN
+		IF rising_edge(clk) THEN
+			uio_oe <= '0'; --set all as inputs
+			p1_btn_left_in 	<= uio_in(0);
+			p1_btn_right_in <= uio_in(1); 
+			p2_btn_left_in 	<= uio_in(2);
+			p2_btn_right_in <= uio_in(3);
+			start_btn_in 	<= uio_in(4);
+			uo_out <= leds_out;
+		END IF;
+	END PROCESS;
+
 	-- Zustandsregister (taktsynchroner Prozess)
 	PROCESS (clk) -- (nur) Taktsignal in Sensitivitätsliste
 	BEGIN
 		IF rising_edge (clk) THEN
-		    IF (reset = '1') then
+		    IF (rst_n = '1') then
 		        state <= s_reset;
 		    ELSE
 			    state <= next_state;
@@ -200,7 +217,7 @@ BEGIN
 				end if;
 					
 			WHEN s_SetRightLED =>
-				leds_out(1) <= '0';
+				leds_out(3) <= '1';
 				if (p1_btn_right_in = '1' or p2_btn_left_in = '1') then
 					next_state <= s_P1Won;
 				elsif (p1_btn_left_in = '1' or p2_btn_right_in = '1') then
@@ -208,13 +225,13 @@ BEGIN
 				end if;
 
 			WHEN s_P1Won =>
-			    leds_out <= "001100";
+			    leds_out <= '1100011';--segments: a,b,f,g
 			    if start_btn_in = '1' then
 					next_state <= s_blinkOn1;
 				end if;
 
 			WHEN s_P2Won =>
-			    leds_out <= "110000";
+			    leds_out <= '1011100';--segments: c,d,e,g
 			    if start_btn_in = '1' then
 					next_state <= s_blinkOn1;
 				end if;
