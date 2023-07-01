@@ -48,6 +48,7 @@ architecture TESTBENCH of ALGORITHMUS_TB is
         variable n: integer;
 
         begin
+            -- FIRST TEST: PLAYER 1 CORRECT BUTTON
             uio_in <= "00000000";
             --start_btn_in <= '1';
             uio_in(4) <= '1';
@@ -63,20 +64,166 @@ architecture TESTBENCH of ALGORITHMUS_TB is
             -- after exactly 3s random is expected to have value 0x98 or 0x31
             -- after blinking value is expected to be 0x4A --> timer init to 0xb100 (45312) --> left led on
             n:=0;
-            while n<127232 loop--wait the maximum waiting time
+            while n<127232 loop--wait the maximum waiting time (~5s)
                 n:= n+1;
                 run_cycle;
             end loop;
 
-            uio_in(2) <= '1'; --player 1 press right led
+            uio_in(0) <= '1'; --player 1 press correct led
+            -- signal somehow takes 3 cycles to get output to uo_out
             run_cycle;
-            assert uo_out = "01100011" report "Test p1 right button press went wrong";
+            run_cycle;
+            run_cycle;
+            assert uo_out = "01100011" report "Test p1 correct button press went wrong";
             n := 0;
             while n < 25000 loop --1 second loop to show result
                 n := n+1;
                 run_cycle;
             end loop;
 
+            -- SECOND TEST: PLAYER 1 WRONG BUTTON
+            uio_in <= "00000000";
+            --start_btn_in <= '1';
+            uio_in(4) <= '1';
+            -- run enough cycle for blinking to be over
+            n := 0;
+            while n < 75264 loop -- >3second loop to wait for blinking to be over 
+                n := n+1;
+                run_cycle;
+            end loop;
+            uio_in(4) <= '0';
+            --start_btn_in <= '0';
+
+            -- after exactly 3s random is expected to have value 0x98 or 0x31
+            -- after blinking value is expected to be 0x4A --> timer init to 0xb100 (45312) --> left led on
+            n:=0;
+            while n<127300 loop--wait the maximum waiting time (~5s)
+                n:= n+1;
+                run_cycle;
+            end loop;
+
+            uio_in(1) <= '1'; --player 1 press wrong led
+            -- signal somehow takes 3 cycles to get output to uo_out
+            run_cycle;
+            run_cycle;
+            run_cycle;
+            assert uo_out = "01011100" report "Test p1 wrong button press went wrong";
+            n := 0;
+            while n < 25000 loop --1 second loop to show result
+                n := n+1;
+                run_cycle;
+            end loop;
+
+            -- THIRD TEST: PLAYER 2 CORRECT BUTTON
+            uio_in <= "00000000";
+            --start_btn_in <= '1';
+            uio_in(4) <= '1';
+            -- run enough cycle for blinking to be over
+            n := 0;
+            while n < 75264 loop -- >3second loop to wait for blinking to be over 
+                n := n+1;
+                run_cycle;
+            end loop;
+            uio_in(4) <= '0';
+            --start_btn_in <= '0';
+
+            n:=0;
+            while n<127232 loop--wait the maximum waiting time (~5s)
+                n:= n+1;
+                run_cycle;
+            end loop;
+
+            uio_in(3) <= '1'; --player 2 press correct led
+            -- signal somehow takes 3 cycles to get output to uo_out
+            run_cycle;
+            run_cycle;
+            run_cycle;
+            assert uo_out = "01011100" report "Test p2 correct button press went wrong";
+            n := 0;
+            while n < 25000 loop --1 second loop to show result
+                n := n+1;
+                run_cycle;
+            end loop;
+
+            -- FOURTH TEST: PLAYER 2 WRONG BUTTON
+            uio_in <= "00000000";
+            --start_btn_in <= '1';
+            uio_in(4) <= '1';
+            -- run enough cycle for blinking to be over
+            n := 0;
+            while n < 75264 loop -- >3second loop to wait for blinking to be over 
+                n := n+1;
+                run_cycle;
+            end loop;
+            uio_in(4) <= '0';
+            --start_btn_in <= '0';
+
+            n:=0;
+            while n<127232 loop--wait the maximum waiting time (~5s)
+                n:= n+1;
+                run_cycle;
+            end loop;
+
+            uio_in(2) <= '1'; --player 2 press correct led
+            -- signal somehow takes 3 cycles to get output to uo_out
+            run_cycle;
+            run_cycle;
+            run_cycle;
+            assert uo_out = "01100011" report "Test p2 wrong button press went wrong";
+            n := 0;
+            while n < 25000 loop --1 second loop to show result
+                n := n+1;
+                run_cycle;
+            end loop;
+
+
+            -- FIFTH TEST: PLAYER 1 PRESS TOO EARLY
+            uio_in <= "00000000";
+            --start_btn_in <= '1';
+            uio_in(4) <= '1';
+            -- run enough cycle for blinking to be over
+            n := 0;
+            while n < 75364 loop -- >3second loop to wait for blinking to be over 
+                n := n+1;
+                run_cycle;
+            end loop;
+            uio_in(4) <= '0';
+            uio_in(0) <= '1';
+            -- signal somehow takes 3 cycles to get output to uo_out
+            run_cycle;
+            run_cycle;
+            run_cycle;
+            assert uo_out = "01011100" report "Test p1 too early button press went wrong";
+            n := 0;
+            while n < 25000 loop --1 second loop to show result
+                n := n+1;
+                run_cycle;
+            end loop;
+
+
+
+            -- SIXTH TEST: PLAYER 2 PRESS TOO EARLY
+            uio_in <= "00000000";
+            --start_btn_in <= '1';
+            uio_in(4) <= '1';
+            -- run enough cycle for blinking to be over
+            n := 0;
+            while n < 75364 loop -- >3second loop to wait for blinking to be over 
+                n := n+1;
+                run_cycle;
+            end loop;
+            uio_in(4) <= '0';
+            uio_in(2) <= '1';
+            -- signal somehow takes 3 cycles to get output to uo_out
+            run_cycle;
+            run_cycle;
+            run_cycle;
+            assert uo_out = "01100011" report "Test p2 too early button press went wrong";
+            n := 0;
+            while n < 25000 loop --1 second loop to show result
+                n := n+1;
+                run_cycle;
+            end loop;
             assert false report "Simulation finished" severity note;
             wait;
         end process;
