@@ -102,7 +102,6 @@ BEGIN
 	    timer_decr <= '0';
 		leds_out <= "00000000";
 		--uo_out <= leds_out;
-		uio_oe <= "00000000";
 	    
 	    
 	    next_state <= state;
@@ -226,14 +225,16 @@ BEGIN
 
 			WHEN s_P1Won =>
 			    leds_out <= "01100011";--segments: a,b,f,g
+				timer_init_500msec <= '1';
 			    if start_btn_in = '1' then
-					next_state <= s_reset;
+					next_state <= s_blinkOn1;
 				end if;
 
 			WHEN s_P2Won =>
 			    leds_out <= "01011100";--segments: c,d,e,g
+				timer_init_500msec <= '1';
 			    if start_btn_in = '1' then
-					next_state <= s_reset;
+					next_state <= s_blinkOn1;
 				end if;
 		END CASE;
 	END PROCESS;
