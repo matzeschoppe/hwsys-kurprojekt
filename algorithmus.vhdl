@@ -71,15 +71,13 @@ BEGIN
 
 	PROCESS(clk)
 	BEGIN
-		IF rising_edge(clk) THEN
-			uio_oe <= "00000000"; --set all as inputs
-			p1_btn_left_in 	<= uio_in(0);
-			p1_btn_right_in <= uio_in(1); 
-			p2_btn_left_in 	<= uio_in(2);
-			p2_btn_right_in <= uio_in(3);
-			start_btn_in 	<= uio_in(4);
-			uo_out <= leds_out;
-		END IF;
+		uio_oe <= "00000000"; --set all as inputs
+		p1_btn_left_in 	<= uio_in(0);
+		p1_btn_right_in <= uio_in(1); 
+		p2_btn_left_in 	<= uio_in(2);
+		p2_btn_right_in <= uio_in(3);
+		start_btn_in 	<= uio_in(4);
+		uo_out <= leds_out;
 	END PROCESS;
 
 	-- Zustandsregister (taktsynchroner Prozess)
@@ -102,8 +100,10 @@ BEGIN
 	    timer_init_500msec <= '0';
 	    timer_init_rand <= '0';
 	    timer_decr <= '0';
+		leds_out <= "00000000";
+		--uo_out <= leds_out;
+		uio_oe <= "00000000";
 	    
-	    leds_out <= (others => '0');
 	    
 	    next_state <= state;
 	    
@@ -113,7 +113,7 @@ BEGIN
 					next_state <= s_blinkOn1;
 				END IF;
 				
-				timer_init_500msec <= '1';			
+				timer_init_500msec <= '1';
 				
 			WHEN s_blinkOn1 =>
 				leds_out <= (others => '1');
@@ -227,13 +227,13 @@ BEGIN
 			WHEN s_P1Won =>
 			    leds_out <= "01100011";--segments: a,b,f,g
 			    if start_btn_in = '1' then
-					next_state <= s_blinkOn1;
+					next_state <= s_reset;
 				end if;
 
 			WHEN s_P2Won =>
 			    leds_out <= "01011100";--segments: c,d,e,g
 			    if start_btn_in = '1' then
-					next_state <= s_blinkOn1;
+					next_state <= s_reset;
 				end if;
 		END CASE;
 	END PROCESS;
