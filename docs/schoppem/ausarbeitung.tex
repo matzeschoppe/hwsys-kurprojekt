@@ -20,9 +20,11 @@
 \usepackage{moreverb} % bessere verbatim-umgebungen
 \usepackage{graphicx}
 \usepackage{pdfpages}
+\usepackage{caption}
 \usepackage{xcolor} % Farben Definierbar \definecolor{fhorange}{RGB}{255,153,0}
 \usepackage{biblatex} % Für das Erstellen eines Literaturverzeichnisses
 \addbibresource{literatur.bib}  % für das erstellen des Literaturverzeichnisses empfielt sich die Software Mendeley, diese ermöglicht einfaches hinzufügen Büchern und das exportieren in eine .bib Datei 
+\usepackage{acronym}
 
 
 
@@ -72,12 +74,12 @@
 				\begin{flushleft}
 					{
 						\textcolor{fhorange}{\large \textbf{Mathias Schoppe \\
-								Entwicklun eines integrierten Schaltkreises - Konzeptionierung und Umsetzung}}
+								Entwicklung eines integrierten Schaltkreises - Konzeptionierung und Umsetzung}}
 					}
 					\vspace{0.2cm}
 				\end{flushleft}
 				\begin{flushleft}
-					{ \large Abgabe bei: Prof. Dr.-Ing. Gundolf Kiefer \\ 
+					{ \large Betreuer: Prof. Dr.-Ing. Gundolf Kiefer \\ 
 						\vspace{0.1cm}
 						Abgabe der Arbeit am: 09.07.2023 			
 					}
@@ -101,7 +103,11 @@
 						\hspace{11.3cm} Fax ~~~ +49 821 5586-3499 \\ ~ \\
 						\hspace{11.3cm} Verfasser der Ausarbeitung: \\
 						\hspace{11.3cm} Mathias Schoppe \\
-						\hspace{11.3cm} mathias.schoppe@hs-augsburg.de \\
+						\hspace{11.3cm} Matr. Nr.: 000000 \\
+						\hspace{11.3cm} M. Sc. Informatik \\
+						\hspace{11.3cm} Teamkollegen: Sascha Testname \\
+						\hspace{11.3cm} und Timo Winklbauer \\
+						
 					}
 				\end{flushleft}
 			\end{minipage}
@@ -120,23 +126,33 @@
 	\pagenumbering{arabic}
 	\section{Einleitung}
 	\subsection{Motivation}
+	In dieser Ausarbeitung liegt der Fokus auf der Entwicklung eines eigenen \acp{IC} mithilfe des Tiny-Tapeout-Projekts\cite{TT}. Der Prozess des \ac{IC}-Designs ist äußerst komplex und erfordert spezialisierte Kenntnisse sowie teure Ausrüstung und Ressourcen. Das Tiny-Tapeout-Projekt hat es geschafft, ein besonderes Konzept zu entwickeln, das es selbst Anfängern ermöglicht, ihre eigenen \ac{IC}-Designs zu realisieren. Es bietet eine kostengünstige Möglichkeit, ein eigenen \ac{IC} fertigen zu lassen und eröffnet somit neue Möglichkeiten für kreative Ideen und individuelle Schaltungen. Dieser Teil der Ausarbeitung behandelt Aspekte, welche für ein solches Vorhaben zu beachten sind und bezieht sich dabei auf die konkrete Umsetzung eines Reaktionsspiels als \ac{IC}.
 	\subsection{Zielsetzung}
-	
+	Das Ziel der Arbeit besteht darin, ein eigenes \ac{IC}-Design für ein Reaktionsspiel zu entwerfen und zu simulieren. Hierbei wird darauf geachtet, dass maximal 500 Logikgatter und ausschließlich die Ein- und Ausgänge des Tiny-Tapeout Evaluationsboards für die Umsetzung benötigt werden. Durch die Realisierung dieses Projekts sollen grundlegende Kenntnisse im IC-Design erlangt und praktische Erfahrungen in der Entwicklung von elektronischen Schaltungen gesammelt werden.
+	\pagebreak
 	\section{Grundlagen}
+	Das nachfolgende Kapitel befasst sich mit grundlegenden Themen, welche für die Umsetzung der Arbeit unabdingbar sind. Die Themenbereiche werden zusammengefasst und so erläutert, dass auch Lesende ohne Vorerfahrung im Bereich der Hardwareentwicklung alle Aspekte der Arbeit nachvollziehen können.
 	\subsection{Linear rückgekoppeltes Schieberegister}
+	Ein \acl{LFSR} (engl. linear feedback shift register (\acs{LFSR})) ist eine Schaltung, die aus einer Reihe von Flip-Flops (digitale Speicherelemente) besteht, die in einer Kette miteinander verbunden sind. Die Rückkopplung erfolgt, indem das Ausgangssignal eines Flip-Flops mit dem Eingang eines vorherigen Flip-Flops verbunden wird. Dadurch bildet sich ein geschlossener Rückkopplungs-Pfad. In Abbildung \ref{fig:lfsr} ist ein 8-Bit Fibonacci-\ac{LFSR} dargestellt. In der Abbildung stellt CLK den Takteingang und Y den Ausgang des \ac{LFSR} dar. Das Fibonacci-\ac{LFSR} zeichnet sich durch das primitive Generatorpolynom (formel: $$pf(x) = x^8 + x^6 + x^5 + x^4 + 1)$$ aus.
+	\vspace{1em}
+	
+	\begin{minipage}{\linewidth}
+		\centering
+		\includegraphics[width=1\linewidth]{pics/lfsr.pdf}
+		\captionof{figure}[lfsr]{Abbildung eines Fibonacci-LFSR, angelehnt an \cite{}}
+		\label{fig:lfsr}
+	\end{minipage}
+
+	\vspace{1em}
+	Test so gehts weiter
+	
 	\subsection{Hardware Timer}
 	% Nicht Konzept und umsetzung, sondern Register-Transfer-Ebene, Gatter-Ebene, Verdrahtung+Platzierung
 	%Implementierung + Validierung
-	
-	\section{Konzept}
-	\subsection{Schaltkreis Entwurf}
-	\subsubsection{Systemebene}
-	%Generelles Konzept und Programmablauf (Ablaufdiagramm)
-	\subsubsection{Register-Transfer-Ebene}
-	%Algorithmus (Beschreibungssprache)
-	\subsubsection{Gatter-Ebene}
-	%Strukturdiagramm
-	
+	\section{Schaltkreis Entwurf} %
+	\subsection{Das Reaktionsspiel}
+	\subsection{Register-Transfer-Ebene} %Hardwarebeschreibungssprache, Zustandsdiagramm und Vhdl code
+	\subsection{Gatter-Ebene, Verdrahtung und Platzierung}
 	
 	\section{Umsetzung}
 	\subsection{Implementierung}
@@ -149,6 +165,37 @@
 	
 	\section{Zusammenfassung und Ausblick}
 	
+	
+	% ----------------------------------------------------------------------------------------------------------
+	% Abkürzungsverzeichnis
+	% ----------------------------------------------------------------------------------------------------------
+	\section{Abkürzungsverzeichnis}
+	\rhead{Abkürzungsverzeichnis}
+	\vspace{1em}
+	\begin{acronym}[KDE]
+		\acro{IC}[IC]{integrierter Schaltkreis}
+		\acrodefplural{IC}[IC]{integrierten Schaltkreises}
+		\acro{LFSR}[LFSR]{linear rückgekoppeltes Schieberegister}
+	\end{acronym}
+	\pagebreak
+	
+		% ----------------------------------------------------------------------------------------------------------
+	% Literatur
+	% ----------------------------------------------------------------------------------------------------------
+	%	\renewcommand\refname{Referenzen}
+	%	\lhead{}
+	%	\bibliographystyle{ieeetr}
+	%	\bibliography{referenzen}
+	%	\pagebreak
+	
+	\section{Literaturverzeichnis}
+	\printbibliography
+%	\rhead{Literaturverzeichnis}
+%	\bibliographystyle{alpha}
+%%	\bibliographystyle{ieeetr}
+%	\renewcommand\refname{}
+%	\bibliography{literatur}
+	\pagebreak
 	
 	
 	
