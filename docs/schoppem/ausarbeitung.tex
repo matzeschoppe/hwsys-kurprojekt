@@ -21,10 +21,12 @@
 \usepackage{graphicx}
 \usepackage{pdfpages}
 \usepackage{caption}
+\usepackage{amsmath}
 \usepackage{xcolor} % Farben Definierbar \definecolor{fhorange}{RGB}{255,153,0}
 \usepackage{biblatex} % Für das Erstellen eines Literaturverzeichnisses
 \addbibresource{literatur.bib}  % für das erstellen des Literaturverzeichnisses empfielt sich die Software Mendeley, diese ermöglicht einfaches hinzufügen Büchern und das exportieren in eine .bib Datei 
 \usepackage{acronym}
+\usepackage[pdfpagelabels=true]{hyperref}
 
 
 
@@ -125,45 +127,84 @@
 	\newpage
 	\pagenumbering{arabic}
 	\section{Einleitung}
+	\label{sec:einleitung}
 	\subsection{Motivation}
 	In dieser Ausarbeitung liegt der Fokus auf der Entwicklung eines eigenen \acp{IC} mithilfe des Tiny-Tapeout-Projekts\cite{TT}. Der Prozess des \ac{IC}-Designs ist äußerst komplex und erfordert spezialisierte Kenntnisse sowie teure Ausrüstung und Ressourcen. Das Tiny-Tapeout-Projekt hat es geschafft, ein besonderes Konzept zu entwickeln, das es selbst Anfängern ermöglicht, ihre eigenen \ac{IC}-Designs zu realisieren. Es bietet eine kostengünstige Möglichkeit, ein eigenen \ac{IC} fertigen zu lassen und eröffnet somit neue Möglichkeiten für kreative Ideen und individuelle Schaltungen. Dieser Teil der Ausarbeitung behandelt Aspekte, welche für ein solches Vorhaben zu beachten sind und bezieht sich dabei auf die konkrete Umsetzung eines Reaktionsspiels als \ac{IC}.
 	\subsection{Zielsetzung}
 	Das Ziel der Arbeit besteht darin, ein eigenes \ac{IC}-Design für ein Reaktionsspiel zu entwerfen und zu simulieren. Hierbei wird darauf geachtet, dass maximal 500 Logikgatter und ausschließlich die Ein- und Ausgänge des Tiny-Tapeout Evaluationsboards für die Umsetzung benötigt werden. Durch die Realisierung dieses Projekts sollen grundlegende Kenntnisse im IC-Design erlangt und praktische Erfahrungen in der Entwicklung von elektronischen Schaltungen gesammelt werden.
+	\subsection{Struktur der Arbeit}
+	Die Struktur, Kapitel und die jeweiligen Unterpunkte sind im Inhaltsverzeichnis
+	übersichtlich dargestellt. Dieser Abschnitt fasst kurz zusammen, was in den fünf
+	Hauptpunkten beschrieben wird:
+	\begin{itemize}
+		\item[\ref{sec:einleitung}]
+		\textbf{Einleitung}\\
+		Die Einleitung verschafft einen Überblick über das zu behandelnde Thema und stellt die Motivation für die Verfassung der Arbeit dar.
+		\item[\ref{sec:theorie}]
+		\textbf{Grundlagen}\\
+		Das Kapitel Grundlagen legt die verwendeten Theorien und Konzepte dar, welche für die Umsetzung des Projektes unabdingbar sind.
+		\item[\ref{sec:icdesign}]
+		\textbf{Schaltkreis Entwurf}\\
+		\item[\ref{sec:eval}]
+		\textbf{Bewertung}\\
+		\item[\ref{sec:summary}]
+		\textbf{Zusammenfassung und Zukunftsausblick}\\
+		
+		
+	\end{itemize}
 	\pagebreak
 	\section{Grundlagen}
-	Das nachfolgende Kapitel befasst sich mit grundlegenden Themen, welche für die Umsetzung der Arbeit unabdingbar sind. Die Themenbereiche werden zusammengefasst und so erläutert, dass auch Lesende ohne Vorerfahrung im Bereich der Hardwareentwicklung alle Aspekte der Arbeit nachvollziehen können.
+	\label{sec:theorie}
+	Das nachfolgende Kapitel befasst sich mit grundlegenden Themen, welche für die Umsetzung der Arbeit unabdingbar sind. Die Themenbereiche werden zusammengefasst und so erläutert, dass auch Lesende ohne Vorerfahrung im Bereich der Hardwareentwicklung alle Aspekte der Arbeit nachvollziehen können. Es wird ausschließlich auf Grundlagen, welche relevant für die konkrete Umsetzung des Projekts sind, eingegangen. 
 	\subsection{Linear rückgekoppeltes Schieberegister}
-	Ein \acl{LFSR} (engl. linear feedback shift register (\acs{LFSR})) ist eine Schaltung, die aus einer Reihe von Flip-Flops (digitale Speicherelemente) besteht, die in einer Kette miteinander verbunden sind. Die Rückkopplung erfolgt, indem das Ausgangssignal eines Flip-Flops mit dem Eingang eines vorherigen Flip-Flops verbunden wird. Dadurch bildet sich ein geschlossener Rückkopplungs-Pfad. In Abbildung \ref{fig:lfsr} ist ein 8-Bit Fibonacci-\ac{LFSR} dargestellt. In der Abbildung stellt CLK den Takteingang und Y den Ausgang des \ac{LFSR} dar. Das Fibonacci-\ac{LFSR} zeichnet sich durch das primitive Generatorpolynom (formel: $$pf(x) = x^8 + x^6 + x^5 + x^4 + 1)$$ aus.
-	\vspace{1em}
+	Ein \acl{LFSR} (engl. linear feedback shift register (\acs{LFSR})) ist eine Schaltung, die aus einer Reihe von Flip-Flops (digitale Speicherelemente) besteht, die in einer Kette miteinander verbunden sind. Die Rückkopplung erfolgt, indem das Ausgangssignal eines Flip-Flops mit dem Eingang eines vorherigen Flip-Flops verbunden wird. Dadurch bildet sich ein geschlossener Rückkopplungs-Pfad.\cite{fox2008linear}\\
+	Die Anzahl der Flip-Flops in einem Schieberegister bestimmt die Anzahl der Speicherplätze oder Zustände, die es halten kann. Ein 4-Bit-Schieberegister kann beispielsweise 16 verschiedene Zustände einnehmen, während ein 8-Bit-Schieberegister 256 verschiedene Zustände einnehmen kann. 
 	
+	\vspace{1em}
 	\begin{minipage}{\linewidth}
 		\centering
 		\includegraphics[width=1\linewidth]{pics/lfsr.pdf}
-		\captionof{figure}[lfsr]{Abbildung eines Fibonacci-LFSR, angelehnt an \cite{}}
+		\captionof{figure}[lfsr]{Abbildung eines Fibonacci-LFSR, angelehnt an \cite{LFSRWiki}}
 		\label{fig:lfsr}
 	\end{minipage}
-
 	\vspace{1em}
-	Test so gehts weiter
+	
+	In Abbildung \ref{fig:lfsr} ist ein 8-Bit Fibonacci-\acs{LFSR} dargestellt. 
+	Dabei repräsentiert CLK den Takteingang und Y den Ausgang des \acs{LFSR}. Bei jedem Taktimpuls wird der gespeicherte Wert der Flip-Flops eine Stelle weiter geschoben. Bei jedem Taktimpuls wird das Rückkopplungs-Bit in das erste Flip-Flop des Schieberegisters eingespeist, alle anderen Bits werden zum nächsten Flip-Flop geschoben. Dies bedeutet, dass das Ausgangssignal des ersten Flip-Flops als Eingangssignal des zweiten Flip-Flops dient, das Ausgangssignal des zweiten Flip-Flops als Eingangssignal des dritten Flip-Flops und so weiter.
+	Das Fibonacci-\acs{LFSR} zeichnet sich durch das in Gleichung \ref{eq:fiblfsr} dargestellte primitive Generatorpolynom aus. Dies ermöglicht dem Schieberegister die Generierung von Pseudozufallszahlen.
+	
+	\begin{equation}
+		pf(x) = x^8 + x^6 + x^5 + x^4 + 1
+		\label{eq:fiblfsr}
+	\end{equation} 
+	
 	
 	\subsection{Hardware Timer}
+	Der Hardware Timer ist eine Schaltungskomponente, die verwendet wird, um Zeit zu messen oder Zeit basierte Ereignisse zu erzeugen. Er besteht aus einem internen Zähler, der bei jedem Taktimpuls inkrementiert oder dekrementiert wird und so die Grundlage für die Zeiterfassung bildet. Der Hardware Timer wird durch Steuersignale gesteuert, welche das starten, stoppen und zurücksetzen ermöglichen. Diese Steuersignale können entweder von einer externen Steuerung oder durch interne Logik generiert werden.\\
+	Damit durch den Hardware Timer eine bestimmte Zeit in Sekunden überbrückt wird, betrachten wir folgende Zusammenhänge. Die Taktfrequenz f gibt an, wie viele Taktzyklen pro Sekunde auftreten. Um eine bestimmte Zeit t in Sekunden zu warten, muss die Anzahl der Takte berechnet werden, die während dieser Zeit vergehen. Dazu wird in Gleichung \ref{eq:clkCount} die Zeit t mit der Taktfrequenz f multipliziert.
+	
+	\begin{equation}
+		\label{eq:clkCount}
+		\text{Anzahl der Takte} = t * f
+	\end{equation}
+	
+	Es ist wichtig zu beachten, dass diese Berechnung auf der idealisierten Annahme basiert, dass die Taktfrequenz und der Takt stabil und präzise sind. In der Praxis können jedoch Ungenauigkeiten auftreten, die die Zeitmessung beeinflussen. 
 	% Nicht Konzept und umsetzung, sondern Register-Transfer-Ebene, Gatter-Ebene, Verdrahtung+Platzierung
 	%Implementierung + Validierung
 	\section{Schaltkreis Entwurf} %
+	\label{sec:icdesign}
 	\subsection{Das Reaktionsspiel}
 	\subsection{Register-Transfer-Ebene} %Hardwarebeschreibungssprache, Zustandsdiagramm und Vhdl code
 	\subsection{Gatter-Ebene, Verdrahtung und Platzierung}
-	
-	\section{Umsetzung}
-	\subsection{Implementierung}
-	%Wokwi/Vhdl programm vorstellen
-	\
+	\subsection{Simulation}
 	
 	\section{Bewertung}
+	\label{sec:eval}
 	\subsection{Zieleinhaltung}
 	\subsection{Interpretation der Ergebnisse}
 	
 	\section{Zusammenfassung und Ausblick}
+	\label{sec:summary}
 	
 	
 	% ----------------------------------------------------------------------------------------------------------
