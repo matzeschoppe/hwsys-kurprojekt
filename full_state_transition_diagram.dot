@@ -1,5 +1,5 @@
 digraph StateTransitionDiagram {
-    rankdir=LR;  // Set the direction from left to right (LR)
+    //rankdir=LR;  // Set the direction from left to right (LR)
 
     // Define the states
     reset [shape=doublecircle, label="RESET"];
@@ -17,7 +17,7 @@ digraph StateTransitionDiagram {
     waitRndInit [shape=circle, label="waitRndInit\ntimer_init_rand <= '1'"];
     waitRnd[shape=circle, label="waitRnd\ntimer_decr<='1'"];
     setLeftLED[shape=circle, label="setLeftLED\nleds_out(0)<='1'"];
-    setRightLED[shape=circle, label="setRightLED"];
+    setRightLED[shape=circle, label="setRightLED\nleds_out(1)<='1'"];
     p1Won[shape=circle, label="p1Won\nleds_out(3:2)<='11'"];
     p2Won[shape=circle, label="p2Won\nleds_out(5:4)<='11'"];
 
