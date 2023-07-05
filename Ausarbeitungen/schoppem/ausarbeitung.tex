@@ -1,7 +1,6 @@
 % deckblatt.tex, 2019/03/15 
 \documentclass[a4paper,12pt]{article}  
 %Inhaltsverzeichnis in Kapitel und Sektionen aufgeteilt  \chapter{title} > \section{title} > subsection{title} \subsubsection{title}
-
 % Pakete und Paket-Configs
 \usepackage{times} % Times Roman als Standardschrift
 \usepackage[ngerman]{babel} % neue deutsche Rechtschreibung und Trennung
@@ -23,12 +22,13 @@
 \usepackage{caption}
 \usepackage{amsmath}
 \usepackage{xcolor} % Farben Definierbar \definecolor{fhorange}{RGB}{255,153,0}
-\usepackage{biblatex} % Für das Erstellen eines Literaturverzeichnisses
+\usepackage[backend=biber, natbib=true, style=numeric,sorting=none]{biblatex} % Für das Erstellen eines Literaturverzeichnisses
 \addbibresource{literatur.bib}  % für das erstellen des Literaturverzeichnisses empfielt sich die Software Mendeley, diese ermöglicht einfaches hinzufügen Büchern und das exportieren in eine .bib Datei 
 \usepackage{acronym}
 \usepackage[pdfpagelabels=true]{hyperref}
-
-
+\usepackage{float}
+\usepackage{array}
+\usepackage{notoccite}
 
 \pagestyle{headings} % Kopf- und Fusszeilen
 \pagenumbering{Roman} % Nummerierung der Seiten
@@ -119,9 +119,6 @@
 	
 	% Zusammenfassung
 	\thispagestyle{empty}
-	\section*{Abstract}
-	\newpage
-	\thispagestyle{empty}
 	\tableofcontents  
 	% Wenn das Inhaltsverzeichnis aktualisiert werden muss 2 mal kompilieren, erst dann wird die Aktualisierung angezeigt
 	\newpage
@@ -164,13 +161,15 @@
 	\begin{minipage}{\linewidth}
 		\centering
 		\includegraphics[width=1\linewidth]{pics/lfsr.pdf}
-		\captionof{figure}[lfsr]{Abbildung eines Fibonacci-LFSR, angelehnt an \cite{LFSRWiki}}
+		\captionof{figure}[lfsr]{Abbildung eines Fibonacci-LFSR, angelehnt an \cite{fox2008linear}}
 		\label{fig:lfsr}
 	\end{minipage}
 	\vspace{1em}
 	
 	In Abbildung \ref{fig:lfsr} ist ein 8-Bit Fibonacci-\acs{LFSR} dargestellt. 
-	Dabei repräsentiert CLK den Takteingang und Y den Ausgang des \acs{LFSR}. Bei jedem Taktimpuls wird der gespeicherte Wert der Flip-Flops eine Stelle weiter geschoben. Bei jedem Taktimpuls wird das Rückkopplungs-Bit in das erste Flip-Flop des Schieberegisters eingespeist, alle anderen Bits werden zum nächsten Flip-Flop geschoben. Dies bedeutet, dass das Ausgangssignal des ersten Flip-Flops als Eingangssignal des zweiten Flip-Flops dient, das Ausgangssignal des zweiten Flip-Flops als Eingangssignal des dritten Flip-Flops und so weiter.
+	Dabei repräsentiert CLK den Takteingang und Y den Ausgang des \acs{LFSR}. Bei jedem Taktimpuls wird der gespeicherte Wert der Flip-Flops eine Stelle weiter geschoben. Bei jedem Taktimpuls wird das Rückkopplungs-Bit in das erste Flip-Flop des Schieberegisters eingespeist, alle anderen Bits werden zum nächsten Flip-Flop geschoben. Dies bedeutet, dass das Ausgangssignal des ersten Flip-Flops als Eingangssignal des zweiten Flip-Flops dient, das Ausgangssignal des zweiten Flip-Flops als Eingangssignal des dritten Flip-Flops und so weiter.\\
+	\pagebreak
+	
 	Das Fibonacci-\acs{LFSR} zeichnet sich durch das in Gleichung \ref{eq:fiblfsr} dargestellte primitive Generatorpolynom aus. Dies ermöglicht dem Schieberegister die Generierung von Pseudozufallszahlen.
 	
 	\begin{equation}
@@ -189,12 +188,87 @@
 	\end{equation}
 	
 	Es ist wichtig zu beachten, dass diese Berechnung auf der idealisierten Annahme basiert, dass die Taktfrequenz und der Takt stabil und präzise sind. In der Praxis können jedoch Ungenauigkeiten auftreten, die die Zeitmessung beeinflussen. 
+	\pagebreak
 	% Nicht Konzept und umsetzung, sondern Register-Transfer-Ebene, Gatter-Ebene, Verdrahtung+Platzierung
 	%Implementierung + Validierung
 	\section{Schaltkreis Entwurf} %
 	\label{sec:icdesign}
+	In diesem Kapitel wird der \acs{IC} Entwurf unseres Reaktionsspiels entstehen. Der übliche Designprozess\cite{timoICDesign} für \acs{IC}s wird in Schritten abgearbeitet. Durch die Implementierung und Simulation des Designs werden wir die Funktionalität des Reaktionsspiels überprüfen und abschließend ein Layout erstellen, das für die Fertigung des \ac{IC}s im Rahmen des Tiny-Tapeout-Projekts verwendet werden kann.
 	\subsection{Das Reaktionsspiel}
+	Um den Schaltkreis genau definieren zu können, muss vorab die exakte Funktionsweise des Reaktionsspiels definiert werden. Das Spiel wird ausgelegt für zwei Spieler. Jeder Spieler hat zwei Knöpfe als Eingabemöglichkeit und es gibt einen zusätzlichen Startknopf. Die insgesamt fünf Knöpfe werden als Eingangssignale in den von uns entwickelten \acs{IC} übermittelt. Als Interface für die Kommunikation mit dem Benutzer wird die auf dem Evaluationsboard von Tiny-Tapeout verbaute 7-Segment-Anzeige verwendet.\cite{timoEvalboard} Dadurch ergibt sich das in Abbildung \ref{fig:gameDesign} dargestellte Design für das Reaktionsspiel.
+	
+	\vspace{1em}
+	\begin{minipage}{\linewidth}
+		\centering
+		\includegraphics[width=1\linewidth]{pics/gameDesign.png}
+		\captionof{figure}[gameDesign]{Design des Reaktionsspiels}
+		\label{fig:gameDesign}
+	\end{minipage}
+	\vspace{1em}
+	
+	Die Leuchtdioden der 7-Segment-Anzeige werden für die Visualisierung drei verschiedener Zustände verwendet, wie in \ref{tab:7SegStates} dargestellt.
+	
+	
+	\vspace{1em}
+	\begin{table}[H]
+		\scriptsize
+		\centering
+		\begin{tabular}{ | l | m{30em} | }
+			\hline
+			\textbf{Zustand} & \textbf{Beschreibung} \\
+			\hline
+			Blinken & Wenn ein Spiel gestartet wird, blinken alle Segmente der Anzeige innerhalb von drei Sekunden drei mal auf\\
+			\hline
+			Zufälliges Aufleuchten & Nachdem eine pseudo zufällige Wartezeit verstrichen ist, leuchtet entweder das linke (bzw. obere) oder rechte (bzw. untere) Segment auf.\\
+			\hline
+			Gewinner Anzeigen & Je nachdem, ob ein Spieler zu früh, den richtigen Knopf oder den falschen Knopf drückt wird der Sieger ermittelt. Gewinnt Spieler 1, dann leuchtet die linke (bzw. obere) Hälfte der 7-Segment-Anzeige auf. Gewinnt Spieler 2, dann leuchtet die rechte (bzw. untere) Hälfte der 7-Segment-Anzeige auf.\\
+			\hline
+		\end{tabular}
+		\caption{Erklärung der Zustände der 7-Segment-Anzeige}
+		\label{tab:7SegStates}
+		\normalsize	
+	\end{table}
+
+	Anhand der in Tabelle \ref{tab:7SegStates} definierten Zustände, lässt sich der Spielablauf für unser Reaktionsspiel ableiten. Das Spiel durchläuft die folgenden Schritte:
+	
+	\begin{enumerate}
+		\item Warten bis der Start-Knopf betätigt wird
+		\item Sobald das Spiel Startet, blinkt die 7-Segment-Anzeige drei mal auf
+		\item Wenn das blinken beendet ist, warte eine (pseudo-)zufällige Zeit
+		\item Nach Ablauf der Zufallszeit, leuchtet das linke oder rechte Segment auf
+		\item Warte auf Knopfdruck der Spieler
+		\item Sieger wird ermittelt und die entsprechenden Segmente in der 7-Segment-Anzeige leuchten auf
+	\end{enumerate}
+	
 	\subsection{Register-Transfer-Ebene} %Hardwarebeschreibungssprache, Zustandsdiagramm und Vhdl code
+	Nachdem die grundlegenden Funktionen des \acs{IC}s im vorherigen Kapitel definiert wurden, kann der Entwurf auf Register-Transfer-Ebene beginnen. Der Prozess des Entwurfs durchläuft mehrere Schritte. Zuerst wird der Algorithmus anhand einer einfachen Beschreibungssprache definiert. Danach werden die Zustände des Algorithmus in einem Zustandsübergangsdiagramm modelliert, sodass die Überführung in eine Hardwarebeschreibungssprache (hier \ac{VHDL}) im nächsten Schritt vereinfacht wird. Zuletzt wird das Programm synthetisiert und simuliert. Auf den Entwurf des Algorithmus wird in dieser Stelle nicht tiefer eingegangen, da die Funktionsweise des Schaltkreises in den Schritten des Zustandsübergangsdiagramms und der Überführung in \ac{VHDL} klar wird.
+	
+	\subsubsection{Zufallsgenerierung}
+%	todo: erklärung zufallszeit und zufällige led
+	
+	\subsubsection{Zustandsübergrangdiagramm}
+	In Abbildung \ref{fig:stateDiagram} ist das aus dem Algorithmus überführte Zustandsübergangsdiagramm dargestellt. Das Diagramm modelliert die folgenden Zustände:
+	
+	\begin{itemize}
+		\item \textbf{State\textunderscore Reset:} In diesem Startzustand wird auf das drücken des Start-Knopfs gewartet. Sobald dieser gedrückt wurde, wird der Zustand verlassen
+		\item \textbf{State\textunderscore blink3Times:} Der Zustand fasst den Ablauf des dreifachen aufblinken der Segmentanzeige zusammen. Ist das Blinken beendet, wird die zufällige Wartezeit initialisiert
+		\item \textbf{State\textunderscore waitRndInit:} Setzt den Zähler des Timers auf einen zufälligen Wert, sodass nach Formel \ref{eq:clkCount} eine Zeit zwischen 0.5-5 Sekunden gewartet wird
+		\item \textbf{State\textunderscore waitRnd:} Dekrementiert den Zähler bei jedem Clock-Zyklus. Währenddessen wird geprüft, ob ein Spieler einen seiner Knöpfe zu früh betätigt. Falls ja, wird direkt der Gewinner angezeigt. Sonst leuchtet nach Ablauf der Zeit entweder das linke oder rechte Segment auf 
+		\item \textbf{State\textunderscore setRightLED:} 
+	\end{itemize}
+	
+	\vspace{1em}
+	\begin{minipage}{\linewidth}
+		\centering
+		\includegraphics[width=1\linewidth]{pics/state_transition_diagram_vert.png}
+		\captionof{figure}[stateDiagram]{Zustandsübergangsdiagramm des \ac{IC}s}
+		\label{fig:stateDiagram}
+	\end{minipage}
+	\vspace{1em}
+	
+	\subsubsection{Simulation}
+	
+	
 	\subsection{Gatter-Ebene, Verdrahtung und Platzierung}
 	\subsection{Simulation}
 	
@@ -217,6 +291,7 @@
 		\acro{IC}[IC]{integrierter Schaltkreis}
 		\acrodefplural{IC}[IC]{integrierten Schaltkreises}
 		\acro{LFSR}[LFSR]{linear rückgekoppeltes Schieberegister}
+		\acro{VHDL}[VHDL]{\textbf{V}ery High Speed Integrated Circuits \textbf{H}ardware \textbf{D}escription \textbf{L}anguage}
 	\end{acronym}
 	\pagebreak
 	
