@@ -154,6 +154,7 @@
 	\label{sec:theorie}
 	Das nachfolgende Kapitel befasst sich mit grundlegenden Themen, welche für die Umsetzung der Arbeit unabdingbar sind. Die Themenbereiche werden zusammengefasst und so erläutert, dass auch Lesende ohne Vorerfahrung im Bereich der Hardwareentwicklung alle Aspekte der Arbeit nachvollziehen können. Es wird ausschließlich auf Grundlagen, welche relevant für die konkrete Umsetzung des Projekts sind, eingegangen. 
 	\subsection{Linear rückgekoppeltes Schieberegister}
+	\label{sec:lfsr}
 	Ein \acl{LFSR} (engl. linear feedback shift register (\acs{LFSR})) ist eine Schaltung, die aus einer Reihe von Flip-Flops (digitale Speicherelemente) besteht, die in einer Kette miteinander verbunden sind. Die Rückkopplung erfolgt, indem das Ausgangssignal eines Flip-Flops mit dem Eingang eines vorherigen Flip-Flops verbunden wird. Dadurch bildet sich ein geschlossener Rückkopplungs-Pfad.\cite{fox2008linear}\\
 	Die Anzahl der Flip-Flops in einem Schieberegister bestimmt die Anzahl der Speicherplätze oder Zustände, die es halten kann. Ein 4-Bit-Schieberegister kann beispielsweise 16 verschiedene Zustände einnehmen, während ein 8-Bit-Schieberegister 256 verschiedene Zustände einnehmen kann. 
 	
@@ -245,8 +246,51 @@
 	
 	\subsubsection{Zufallsgenerierung}
 %	todo: erklärung zufallszeit und zufällige led
+	Für die Zufallsgenerierung wird, wie im Kapitel \ref{sec:lfsr} eingeführt, ein 8-bit linear rückgekoppeltes Schieberegister verwendet. Als Bereich für die zufällige Wartezeit haben wir eine Zeit zwischen 0,5 und 5 Sekunden definiert. Nach Formel \ref{eq:clkCount} kann abhängig von der Taktfrequenz des Evaluationsboards die Anzahl der Takte ausgerechnet werden, welche mindestens bzw. maximal gewartet werden dürfen um in diesem Bereich zu bleiben. Wie in Kapitel \ref{timoEvalboard} eingeführt, läuft das Evaluationsboard mit einer Taktfrequenz von 25 Kilohertz. Daher ergibt sich für die zufällige Wartezeit von 0,5 Sekunden folgende Taktanzahl: $$cnt_{min} = 25.000 * 0.5 = 12.500$$
+	Die maximale Anzahl der Takte lässt sich wie folgt berechnen: $$cnt_{max} = 25.000 * 5 = 125.000$$
+	Für den Zähler werden also 17-Bit benötigt, um den Wertebereich bis 125.000 darstellen zu können. Damit mindestens eine halbe Sekunde Wartezeit entsteht, wird der Zähler mit der Bitfolge $0 0011 0001 0000 0000(12.544)$ initialisiert, was in etwa der halben Sekunde entspricht. Für die zufällige Wartezeit werden die drei niedrigsten Bits des \acs{LFSR} für die drei höherwertigsten bits des Zählers verwendet, wie in Abbildung \ref{fig:random} dargestellt ist.
 	
-	\subsubsection{Zustandsübergrangdiagramm}
+	\vspace{1em}
+	\begin{minipage}{\linewidth}
+		\centering
+		\includegraphics[width=1\linewidth]{pics/random.pdf}
+		\captionof{figure}[random]{Wertevergabe des Zählers für die zufällige Wartezeit}
+		\label{fig:random}
+	\end{minipage}
+	\vspace{1em}
+	
+	Somit ergeben sich die in Tabelle \ref{tab:counterStates} dargestellten möglichen Kombinationen für die Wartezeit.
+	
+	\vspace{1em}
+	\begin{table}[H]
+		\scriptsize
+		\centering
+		\begin{tabular}{ | l | l | }
+			\hline
+			\textbf{Bitfolge} & \textbf{Wartezeit in Sekunden} \\
+			\hline
+			0 0011 0001 00... 0 & 0,50 Sekunden\\
+			\hline
+			0 0111 0001 00... 0 & 1,16 Sekunden\\
+			\hline
+			0 1011 0001 00... 0 & 1,81 Sekunden\\
+			\hline
+			0 1111 0001 00... 0 & 2,47 Sekunden\\
+			\hline
+			1 0011 0001 00... 0 & 3,12 Sekunden\\
+			\hline
+			1 0111 0001 00... 0 & 3,78 Sekunden\\
+			\hline
+			1 1011 0001 00... 0 & 4,43 Sekunden\\
+			\hline
+			1 1111 0001 00... 0 & 5,09 Sekunden\\
+			\hline
+		\end{tabular}
+		\caption{Alle möglichen Bitfolgen des Zählers für die zufällige Wartezeit}
+		\label{tab:counterStates}
+		\normalsize	
+	\end{table}
+	\subsubsection{Zustandsübergrangsdiagramm}
 	In Abbildung \ref{fig:stateDiagram} ist das aus dem Algorithmus überführte Zustandsübergangsdiagramm dargestellt. Das Diagramm modelliert die folgenden Zustände:
 	
 	\begin{itemize}
@@ -254,7 +298,10 @@
 		\item \textbf{State\textunderscore blink3Times:} Der Zustand fasst den Ablauf des dreifachen aufblinken der Segmentanzeige zusammen. Ist das Blinken beendet, wird die zufällige Wartezeit initialisiert
 		\item \textbf{State\textunderscore waitRndInit:} Setzt den Zähler des Timers auf einen zufälligen Wert, sodass nach Formel \ref{eq:clkCount} eine Zeit zwischen 0.5-5 Sekunden gewartet wird
 		\item \textbf{State\textunderscore waitRnd:} Dekrementiert den Zähler bei jedem Clock-Zyklus. Währenddessen wird geprüft, ob ein Spieler einen seiner Knöpfe zu früh betätigt. Falls ja, wird direkt der Gewinner angezeigt. Sonst leuchtet nach Ablauf der Zeit entweder das linke oder rechte Segment auf 
-		\item \textbf{State\textunderscore setRightLED:} 
+		\item \textbf{State\textunderscore setRightLED:} Das rechte Segment leuchtet und es wird auf Knopfdruck von einem der Spieler gewartet, sodass der Gewinner ermittelt werden kann
+		\item \textbf{State\textunderscore setLeftLED:} Das link Segment leuchtet und es wird auf Knopfdruck von einem der Spieler gewartet, sodass der Gewinner ermittelt werden kann
+		\item \textbf{State\textunderscore p1Won:} Spieler 1 hat das Spiel gewonnen, das bedeutet die linke Hälfte der 7-Segment-Anzeige leuchtet auf. Anschließend wird auf ein erneutes drücken des Start-Knopfes gewartet
+		\item \textbf{State\textunderscore p2Won:} Spieler 2 hat das Spiel gewonnen, das bedeutet die rechte Hälfte der 7-Segment-Anzeige leuchtet auf. Anschließend wird auf ein erneutes drücken des Start-Knopfes gewartet
 	\end{itemize}
 	
 	\vspace{1em}
@@ -265,6 +312,8 @@
 		\label{fig:stateDiagram}
 	\end{minipage}
 	\vspace{1em}
+	
+	
 	
 	\subsubsection{Simulation}
 	
