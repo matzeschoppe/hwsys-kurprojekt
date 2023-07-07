@@ -1,0 +1,12 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k}{ENTITY} \PYG{n+nc}{ALGORITHMUS} \PYG{k}{IS}
+  \PYG{k}{PORT}\PYG{p}{(}
+    \PYG{n}{clk} \PYG{o}{:} \PYG{k}{IN} \PYG{k+kt}{STD\PYGZus{}LOGIC}\PYG{p}{;} \PYG{c+c1}{\PYGZhy{}\PYGZhy{} 25 kHz}
+    \PYG{n}{rst\PYGZus{}n}\PYG{o}{:} \PYG{k}{IN} \PYG{k+kt}{STD\PYGZus{}LOGIC}\PYG{p}{;}
+    \PYG{n}{uio\PYGZus{}in}\PYG{o}{:} \PYG{k}{IN} \PYG{k+kt}{STD\PYGZus{}LOGIC\PYGZus{}VECTOR} \PYG{p}{(}\PYG{l+m+mi}{7} \PYG{k}{DOWNTO} \PYG{l+m+mi}{0}\PYG{p}{);}
+    \PYG{n}{uio\PYGZus{}oe}\PYG{o}{:} \PYG{k}{out} \PYG{k+kt}{STD\PYGZus{}LOGIC\PYGZus{}VECTOR} \PYG{p}{(}\PYG{l+m+mi}{7} \PYG{k}{DOWNTO} \PYG{l+m+mi}{0}\PYG{p}{);}
+    \PYG{n}{uo\PYGZus{}out} \PYG{o}{:} \PYG{k}{out} \PYG{k+kt}{STD\PYGZus{}LOGIC\PYGZus{}VECTOR}\PYG{p}{(}\PYG{l+m+mi}{7} \PYG{k}{DOWNTO} \PYG{l+m+mi}{0}\PYG{p}{);}
+    \PYG{n}{ena} \PYG{o}{:} \PYG{k}{in} \PYG{k+kt}{STD\PYGZus{}LOGIC}
+  \PYG{p}{);}
+\PYG{k}{END} \PYG{n+nc}{ALGORITHMUS}\PYG{p}{;}
+\end{Verbatim}

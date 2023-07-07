@@ -29,6 +29,7 @@
 \usepackage{float}
 \usepackage{array}
 \usepackage{notoccite}
+\usepackage{minted}
 
 \pagestyle{headings} % Kopf- und Fusszeilen
 \pagenumbering{Roman} % Nummerierung der Seiten
@@ -76,7 +77,7 @@
 				\begin{flushleft}
 					{
 						\textcolor{fhorange}{\large \textbf{Mathias Schoppe \\
-								Entwicklung eines integrierten Schaltkreises - Konzeptionierung und Umsetzung}}
+								Entwicklung eines integrierten Schaltkreises - Der Schaltkreisentwurf}}
 					}
 					\vspace{0.2cm}
 				\end{flushleft}
@@ -126,29 +127,31 @@
 	\section{Einleitung}
 	\label{sec:einleitung}
 	\subsection{Motivation}
-	In dieser Ausarbeitung liegt der Fokus auf der Entwicklung eines eigenen \acp{IC} mithilfe des Tiny-Tapeout-Projekts\cite{TT}. Der Prozess des \ac{IC}-Designs ist äußerst komplex und erfordert spezialisierte Kenntnisse sowie teure Ausrüstung und Ressourcen. Das Tiny-Tapeout-Projekt hat es geschafft, ein besonderes Konzept zu entwickeln, das es selbst Anfängern ermöglicht, ihre eigenen \ac{IC}-Designs zu realisieren. Es bietet eine kostengünstige Möglichkeit, ein eigenen \ac{IC} fertigen zu lassen und eröffnet somit neue Möglichkeiten für kreative Ideen und individuelle Schaltungen. Dieser Teil der Ausarbeitung behandelt Aspekte, welche für ein solches Vorhaben zu beachten sind und bezieht sich dabei auf die konkrete Umsetzung eines Reaktionsspiels als \ac{IC}.
-	\subsection{Zielsetzung}
-	Das Ziel der Arbeit besteht darin, ein eigenes \ac{IC}-Design für ein Reaktionsspiel zu entwerfen und zu simulieren. Hierbei wird darauf geachtet, dass maximal 500 Logikgatter und ausschließlich die Ein- und Ausgänge des Tiny-Tapeout Evaluationsboards für die Umsetzung benötigt werden. Durch die Realisierung dieses Projekts sollen grundlegende Kenntnisse im IC-Design erlangt und praktische Erfahrungen in der Entwicklung von elektronischen Schaltungen gesammelt werden.
-	\subsection{Struktur der Arbeit}
-	Die Struktur, Kapitel und die jeweiligen Unterpunkte sind im Inhaltsverzeichnis
-	übersichtlich dargestellt. Dieser Abschnitt fasst kurz zusammen, was in den fünf
-	Hauptpunkten beschrieben wird:
-	\begin{itemize}
-		\item[\ref{sec:einleitung}]
-		\textbf{Einleitung}\\
-		Die Einleitung verschafft einen Überblick über das zu behandelnde Thema und stellt die Motivation für die Verfassung der Arbeit dar.
-		\item[\ref{sec:theorie}]
-		\textbf{Grundlagen}\\
-		Das Kapitel Grundlagen legt die verwendeten Theorien und Konzepte dar, welche für die Umsetzung des Projektes unabdingbar sind.
-		\item[\ref{sec:icdesign}]
-		\textbf{Schaltkreis Entwurf}\\
-		\item[\ref{sec:eval}]
-		\textbf{Bewertung}\\
-		\item[\ref{sec:summary}]
-		\textbf{Zusammenfassung und Zukunftsausblick}\\
-		
-		
-	\end{itemize}
+	In dieser Ausarbeitung liegt der Fokus auf der Entwicklung eines eigenen \acp{IC} mithilfe des Tiny-Tapeout-Projekts\cite{TT}. Der Prozess des \ac{IC}-Designs ist äußerst komplex und erfordert spezialisierte Kenntnisse sowie teure Ausrüstung und Ressourcen. Das Tiny-Tapeout-Projekt hat es geschafft, ein besonderes Konzept zu entwickeln, das es selbst Anfängern ermöglicht, ihre eigenen \ac{IC}-Designs zu realisieren. Es bietet eine kostengünstige Möglichkeit, ein eigenen \ac{IC} fertigen zu lassen und eröffnet somit neue Möglichkeiten für kreative Ideen und individuelle Schaltungen.
+	Das Ziel der Arbeit besteht darin, ein eigenes \ac{IC}-Design für ein Reaktionsspiel zu entwerfen und zu simulieren. Hierbei wird darauf geachtet, dass maximal 500 Logikgatter und ausschließlich die Ein- und Ausgänge des Tiny-Tapeout Evaluationsboards für die Umsetzung benötigt werden. Durch die Realisierung dieses Projekts sollen grundlegende Kenntnisse im IC-Design erlangt und praktische Erfahrungen in der Entwicklung von elektronischen Schaltungen gesammelt werden. 
+	Dieses Projekt wird in drei seperaten Ausarbeitungen unterteilt. Der Prozess des IC-Designs, die Tools von Tiny-Tapeout und die Umsetzung des Reaktionsspiels als \acs{IC} werden von Sascha Binkert, Mathias Schoppe und Timo Winklbauer abgedeckt.
+	Dieser Teil der Ausarbeitung behandelt Aspekte, welche für das Vorhaben der konkreten Umsetzung zu beachten sind und bezieht sich dabei auf den Entwurf des Reaktionsspiels.
+	
+%	\subsection{Struktur der Arbeit}
+%	Die Struktur, Kapitel und die jeweiligen Unterpunkte sind im Inhaltsverzeichnis
+%	übersichtlich dargestellt. Dieser Abschnitt fasst kurz zusammen, was in den fünf
+%	Hauptpunkten beschrieben wird:
+%	\begin{itemize}
+%		\item[\ref{sec:einleitung}]
+%		\textbf{Einleitung}\\
+%		Die Einleitung verschafft einen Überblick über das zu behandelnde Thema und stellt die Motivation für die Verfassung der Arbeit dar.
+%		\item[\ref{sec:theorie}]
+%		\textbf{Grundlagen}\\
+%		Das Kapitel Grundlagen legt die verwendeten Theorien und Konzepte dar, welche für die Umsetzung des Projektes unabdingbar sind.
+%		\item[\ref{sec:icdesign}]
+%		\textbf{Schaltkreis Entwurf}\\
+%		\item[\ref{sec:eval}]
+%		\textbf{Bewertung}\\
+%		\item[\ref{sec:summary}]
+%		\textbf{Zusammenfassung und Zukunftsausblick}\\
+%		
+%		
+%	\end{itemize}
 	\pagebreak
 	\section{Grundlagen}
 	\label{sec:theorie}
@@ -194,9 +197,9 @@
 	%Implementierung + Validierung
 	\section{Schaltkreis Entwurf} %
 	\label{sec:icdesign}
-	In diesem Kapitel wird der \acs{IC} Entwurf unseres Reaktionsspiels entstehen. Der übliche Designprozess\cite{timoICDesign} für \acs{IC}s wird in Schritten abgearbeitet. Durch die Implementierung und Simulation des Designs werden wir die Funktionalität des Reaktionsspiels überprüfen und abschließend ein Layout erstellen, das für die Fertigung des \ac{IC}s im Rahmen des Tiny-Tapeout-Projekts verwendet werden kann.
+	In diesem Kapitel wird der \acs{IC} Entwurf unseres Reaktionsspiels entstehen. Durch die Simulation des Designs werden wir die Funktionalität des Reaktionsspiels überprüfen und abschließend ein Layout erstellen, das für die Fertigung des \ac{IC}s im Rahmen des Tiny-Tapeout-Projekts verwendet werden kann.
 	\subsection{Das Reaktionsspiel}
-	Um den Schaltkreis genau definieren zu können, muss vorab die exakte Funktionsweise des Reaktionsspiels definiert werden. Das Spiel wird ausgelegt für zwei Spieler. Jeder Spieler hat zwei Knöpfe als Eingabemöglichkeit und es gibt einen zusätzlichen Startknopf. Die insgesamt fünf Knöpfe werden als Eingangssignale in den von uns entwickelten \acs{IC} übermittelt. Als Interface für die Kommunikation mit dem Benutzer wird die auf dem Evaluationsboard von Tiny-Tapeout verbaute 7-Segment-Anzeige verwendet.\cite{timoEvalboard} Dadurch ergibt sich das in Abbildung \ref{fig:gameDesign} dargestellte Design für das Reaktionsspiel.
+	Um den Schaltkreis genau definieren zu können, muss vorab die exakte Funktionsweise des Reaktionsspiels definiert werden. Das Spiel wird ausgelegt für zwei Spieler. Jeder Spieler hat zwei Knöpfe als Eingabemöglichkeit und es gibt einen zusätzlichen Startknopf. Die insgesamt fünf Knöpfe werden als Eingangssignale in den von uns entwickelten \acs{IC} übermittelt. Als Interface für die Kommunikation mit dem Benutzer wird die auf dem Evaluationsboard von Tiny-Tapeout verbaute 7-Segment-Anzeige verwendet, welches in Kapitel 3.2 von Timo Winklbauer eingeführt wurde. Dadurch ergibt sich das in Abbildung \ref{fig:gameDesign} dargestellte Design für das Reaktionsspiel.
 	
 	\vspace{1em}
 	\begin{minipage}{\linewidth}
@@ -245,8 +248,7 @@
 	Nachdem die grundlegenden Funktionen des \acs{IC}s im vorherigen Kapitel definiert wurden, kann der Entwurf auf Register-Transfer-Ebene beginnen. Der Prozess des Entwurfs durchläuft mehrere Schritte. Zuerst wird der Algorithmus anhand einer einfachen Beschreibungssprache definiert. Danach werden die Zustände des Algorithmus in einem Zustandsübergangsdiagramm modelliert, sodass die Überführung in eine Hardwarebeschreibungssprache (hier \ac{VHDL}) im nächsten Schritt vereinfacht wird. Zuletzt wird das Programm synthetisiert und simuliert. Auf den Entwurf des Algorithmus wird in dieser Stelle nicht tiefer eingegangen, da die Funktionsweise des Schaltkreises in den Schritten des Zustandsübergangsdiagramms und der Überführung in \ac{VHDL} klar wird.
 	
 	\subsubsection{Zufallsgenerierung}
-%	todo: erklärung zufallszeit und zufällige led
-	Für die Zufallsgenerierung wird, wie im Kapitel \ref{sec:lfsr} eingeführt, ein 8-bit linear rückgekoppeltes Schieberegister verwendet. Als Bereich für die zufällige Wartezeit haben wir eine Zeit zwischen 0,5 und 5 Sekunden definiert. Nach Formel \ref{eq:clkCount} kann abhängig von der Taktfrequenz des Evaluationsboards die Anzahl der Takte ausgerechnet werden, welche mindestens bzw. maximal gewartet werden dürfen um in diesem Bereich zu bleiben. Wie in Kapitel \ref{timoEvalboard} eingeführt, läuft das Evaluationsboard mit einer Taktfrequenz von 25 Kilohertz. Daher ergibt sich für die zufällige Wartezeit von 0,5 Sekunden folgende Taktanzahl: $$cnt_{min} = 25.000 * 0.5 = 12.500$$
+	Für die Zufallsgenerierung wird, wie im Kapitel \ref{sec:lfsr} eingeführt, ein 8-bit linear rückgekoppeltes Schieberegister verwendet. Als Bereich für die zufällige Wartezeit haben wir eine Zeit zwischen 0,5 und 5 Sekunden definiert. Nach Formel \ref{eq:clkCount} kann abhängig von der Taktfrequenz des Evaluationsboards die Anzahl der Takte ausgerechnet werden, welche mindestens bzw. maximal gewartet werden dürfen um in diesem Bereich zu bleiben. Wie in Kapitel 3.2 aus der Ausarbeitung von Timo Winklbauer eingeführt, ist die Taktfrequenz des Evaluationsboards einstellbar. Wir haben für unser Projekt eine Taktfrequenz von 25 Kilohertz festgelegt. Daher ergibt sich für die zufällige Wartezeit von 0,5 Sekunden folgende Taktanzahl: $$cnt_{min} = 25.000 * 0.5 = 12.500$$
 	Die maximale Anzahl der Takte lässt sich wie folgt berechnen: $$cnt_{max} = 25.000 * 5 = 125.000$$
 	Für den Zähler werden also 17-Bit benötigt, um den Wertebereich bis 125.000 darstellen zu können. Damit mindestens eine halbe Sekunde Wartezeit entsteht, wird der Zähler mit der Bitfolge $0 0011 0001 0000 0000(12.544)$ initialisiert, was in etwa der halben Sekunde entspricht. Für die zufällige Wartezeit werden die drei niedrigsten Bits des \acs{LFSR} für die drei höherwertigsten bits des Zählers verwendet, wie in Abbildung \ref{fig:random} dargestellt ist.
 	
@@ -269,7 +271,7 @@
 			\hline
 			\textbf{Bitfolge} & \textbf{Wartezeit in Sekunden} \\
 			\hline
-			0 0011 0001 00... 0 & 0,50 Sekunden\\
+			 0011 0001 00... 0 & 0,50 Sekunden\\
 			\hline
 			0 0111 0001 00... 0 & 1,16 Sekunden\\
 			\hline
@@ -290,6 +292,8 @@
 		\label{tab:counterStates}
 		\normalsize	
 	\end{table}
+
+	Für die Selektion, ob das linke oder rechte Segment der 7-Segment-Anzeige aufleuchten soll, wird das höchstwertige Bit des \acs{LFSR} extrahiert. Der Wert 0 bedeutet, dass das rechte Segment aufleuchten soll und der Wert 1, dass das linke Segment aufleuchten soll.
 	\subsubsection{Zustandsübergrangsdiagramm}
 	In Abbildung \ref{fig:stateDiagram} ist das aus dem Algorithmus überführte Zustandsübergangsdiagramm dargestellt. Das Diagramm modelliert die folgenden Zustände:
 	
@@ -313,23 +317,105 @@
 	\end{minipage}
 	\vspace{1em}
 	
-	
+	Dieser Ablauf stellt exakt die Funktionsweise unseres Algorithmus dar und wurde anschließend von uns in \acs{VHDL}-Code übersetzt. Die Signalbenennung muss, damit die Abgabe bei Tiny-Tapeout stattfinden kann, an das vorgegebene Interface wie folgt angepasst werden.
+	\pagebreak
+	\begin{minted}{vhdl}
+ENTITY ALGORITHMUS IS
+  PORT(
+    clk : IN STD_LOGIC; -- 25 kHz
+    rst_n: IN STD_LOGIC;
+    uio_in: IN STD_LOGIC_VECTOR (7 DOWNTO 0);
+    uio_oe: out STD_LOGIC_VECTOR (7 DOWNTO 0);
+    uo_out : out STD_LOGIC_VECTOR(7 DOWNTO 0);
+    ena : in STD_LOGIC
+  );
+END ALGORITHMUS;
+	\end{minted}
+%\begin{lstlisting}[label={lst:algo}, language=vhdl ]
+%ENTITY ALGORITHMUS IS
+%  PORT(
+%    clk : IN STD_LOGIC; -- 25 kHz
+%    rst_n: IN STD_LOGIC;
+%    uio_in: IN STD_LOGIC_VECTOR (7 DOWNTO 0);
+%    uio_oe: out STD_LOGIC_VECTOR (7 DOWNTO 0);
+%    uo_out : out STD_LOGIC_VECTOR(7 DOWNTO 0);
+%    ena : in STD_LOGIC
+%  );
+%END ALGORITHMUS;
+%\end{lstlisting}
+
+	Die Signale $uio_{oe}$, $uio_{in}$ und $uo_{out}$ haben folgende Bedeutung: 
+	\begin{itemize}
+		\item $uio_{oe}$: Dieses Signal konfiguriert die bidirektionale Input/Output Schnittstelle des Evaluationsboards. (0 = Input, 1 = Output)
+		\item $uio_{in}$: Steht für das Input Signal in die 8-Pin-bidirektionale-Input/Output Schnittstelle des Evaluationsboards, diese werden für unsere fünf Spiel-Knöpfe als Inputs verwendet
+		\item $uo_{out}$: Steht für das Output Signal der 8-Pin-Output Schnittstelle des Evaluationsboards und ist mit der 7-Segment-Anzeige verbunden
+	\end{itemize}
 	
 	\subsubsection{Simulation}
+	Die Simulation unseres Schaltkreises findet in zwei Komponenten statt:
+	\begin{enumerate}
+		\item \textbf{Testbench}: Um die Korrektheit des Algorithmus zu validieren, wird eine \ac{VHDL}-Testbench geschrieben
+		\item \textbf{\ac{FPGA}}: Als weitere Absicherung, wird der Algorithmus so angepasst, dass er auf einem \ac{FPGA} laufend gemacht und das Spiel vorab getestet werden kann
+	\end{enumerate}
 	
+	Nachdem die Testbench erfolgreich elaboriert und simuliert wurde, können wir diese mit dem Tool GTKWave\cite{gtkwave} betrachten. In Abbildung \ref{fig:algoTB} ist der Verlauf der Ein- und Ausgänge unseres \ac{IC}s dargestellt.
+	 
+	\vspace{1em}
+	\begin{minipage}{\linewidth}
+		\centering
+		\includegraphics[width=1\linewidth]{pics/algoTB.pdf}
+		\captionof{figure}[algoTB]{Signalverläufe der Algorithmus Testbench}
+		\label{fig:algoTB}
+	\end{minipage}
+	\vspace{1em}
 	
+%	Folgende mögliche Abläufe werden von der Testbench simuliert:
+%	\begin{enumerate}
+%		\item Das linke Segment leuchtet auf und Spieler eins drückt den richtigen Knopf
+%		\item Das linke Segment leuchtet auf und Spieler eins drückt den falschen Knopf
+%		\item Das rechte Segment leuchtet auf und Spieler zwei drückt den richtigen Knopf
+%		\item Das rechte Segment leuchtet auf und Spieler zwei drückt den falschen Knopf
+%		\item Spieler eins drückt bevor ein Segment aufleuchtet und verliert
+%		\item Spieler zwei drückt bevor ein Segment aufleuchtet und verliert
+%	\end{enumerate}
+
+	Für die Simulation mit einem \ac{FPGA} wird das Zybo Zynq-7000 ARM/FPGA SoC Trainer Board \cite{zyboBoard} verwendet. Der Code für den \acs{IC} musste an die Schnittstellen des Boards angepasst werden. Das Reaktionsspiel auf dem \ac{FPGA} wurde im Abschluss-Kolloquium vorgeführt. Leider sind hierbei keine Bildaufnahmen dokumentiert worden.
 	\subsection{Gatter-Ebene, Verdrahtung und Platzierung}
-	\subsection{Simulation}
+	Auf Gatter-Ebene und für die Verdrahtung und Platzierung werden die Aufgaben von Tiny-Tapout abgenommen. Damit dies möglich ist, muss ein Github Projekt angelegt werden, welches sich an einer Vorlage orientiert. In der Projekt-Vorlage wurden Github-Actions angelegt, zur Validierung des Schaltkreises. Wenn alle Tests bestehen, resultiert eine gds-2 Datei. Die einzelnen Schritte bis hin zu dem gds Format werden in Kapitel \cite{saschaGDS} erklärt. 
+%	todo sacha zitieren
+	Da Tiny-Tapeout ausschließlich Verilog als Hardwarebeschreibungssprache akzeptiert, mussten unsere \acs{VHDL}-Dateien mithilfe des Tools yosys\cite{yosys} zu gültigem Verilog Code konvertiert werden. In unserem aktuellen Stand, wurde der Verilog Algorithmus von den Github-Actions akzeptiert, wie in Abbildung \ref{fig:ttGit} zu sehen ist. Vor der Einreichung bei Tiny-Tapeout, muss der konvertierte Code für den Algorithmus erneut auf Richtigkeit überprüft werden.
 	
-	\section{Bewertung}
-	\label{sec:eval}
-	\subsection{Zieleinhaltung}
-	\subsection{Interpretation der Ergebnisse}
+	\vspace{1em}
+	\begin{minipage}{\linewidth}
+		\centering
+		\includegraphics[width=0.85\linewidth]{pics/ttGit.png}
+		\captionof{figure}[ttGit]{Tiny-Tapeout04 Github Repository}
+		\label{fig:ttGit}
+	\end{minipage}
+	\vspace{1em}
 	
+	Darüber hinaus ermöglicht GitHub den Zugriff auf eine Statistik, die zusammenfasst, wie häufig bestimmte Standardzellen in unserem Schaltkreis vorkommen. Wie aus Abbildung \ref{fig:cellUsage} entnommen werden kann, wird für unsere Schaltung 228 Zellen benötigt. Für den Schaltkreis werden Combo Logic, Flip Flops, Buffer, Or, And, Nand, Inverter und Multiplexer verwendet. Interessant wäre eine Analyse der Misc(dt. "Verschiedenes") Zellen, da diese Latches oder ähnliches beinhalten könnten, welche es im Hardwaredesign zu vermeiden gilt.
+	
+	\vspace{1em}
+	\begin{minipage}{\linewidth}
+		\centering
+		\includegraphics[width=0.85\linewidth]{pics/cellUsage.png}
+		\captionof{figure}[ttGit]{Zellübersicht nach Synthese des Algorithmus}
+		\label{fig:cellUsage}
+	\end{minipage}
+	\vspace{1em}
+	
+	\pagebreak
 	\section{Zusammenfassung und Ausblick}
-	\label{sec:summary}
+	\label{sec:eval}
+	Das \ac{IC}-Design für das Reaktionsspiel wurde erfolgreich implementiert und auf einem \ac{FPGA} getestet. Das Spiel funktionierte wie erwartet, und die Spieler konnten ihre Reaktionszeit messen, indem sie den richtigen Knopf zur richtigen Zeit drückten. Die LEDs zeigten die Spielzustände korrekt an, einschließlich des Blinkens, der zufälligen aufleuchtenden LED und der Anzeige des Gewinners. Beim Testen mit einer VHDL Testbench wurden verschiedene Szenarien durchgespielt, um sicherzustellen, dass das Spiel korrekt reagiert und die gewünschten Ergebnisse liefert. Das \ac{IC}-Design erwies sich als robust und zuverlässig in Bezug auf die Spiellogik.
 	
+	Das \ac{IC}-Design erfüllt alle definierten Anforderungen. Es verwendet die vorgegebenen Eingänge und Ausgänge des Tiny-Tapeout-Evaluationsboards und beschränkt sich auf maximal 500 Logikgatter. Der Entwurf soll im Rahmen des nächsten Rollouts eingereicht werden, sodass der \acs{IC} entstehen kann. Allerdings muss der von \ac{VHDL} zu Verilog konvertierte Algorithmus zuvor noch getestet werden.
 	
+	Der Entwurf des \ac{IC}s hat zu wertvoller Erfahrung im Bereich der Hardwareentwicklung geführt. Es konnten Kenntnisse und Fähigkeiten im \acs{IC}-Design erlangt werden. Die Berücksichtigung verschiedener Aspekte, wie die Auswahl geeigneter Logikgatter und das Routing von Signalen hat geholfen, wertvolle Erkenntnisse zu erlangen. 
+
+	
+	\pagebreak
 	% ----------------------------------------------------------------------------------------------------------
 	% Abkürzungsverzeichnis
 	% ----------------------------------------------------------------------------------------------------------
@@ -341,8 +427,8 @@
 		\acrodefplural{IC}[IC]{integrierten Schaltkreises}
 		\acro{LFSR}[LFSR]{linear rückgekoppeltes Schieberegister}
 		\acro{VHDL}[VHDL]{\textbf{V}ery High Speed Integrated Circuits \textbf{H}ardware \textbf{D}escription \textbf{L}anguage}
+		\acro{FPGA}[FPGA]{Field Programmable Gate Array}
 	\end{acronym}
-	\pagebreak
 	
 		% ----------------------------------------------------------------------------------------------------------
 	% Literatur
