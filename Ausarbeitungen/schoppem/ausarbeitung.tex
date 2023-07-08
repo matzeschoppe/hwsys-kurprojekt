@@ -77,7 +77,7 @@
 				\begin{flushleft}
 					{
 						\textcolor{fhorange}{\large \textbf{Mathias Schoppe \\
-								Entwicklung eines integrierten Schaltkreises - Der Schaltkreisentwurf}}
+								Entwicklung eines ICs - Der Schaltkreisentwurf}}
 					}
 					\vspace{0.2cm}
 				\end{flushleft}
@@ -165,7 +165,7 @@
 	\begin{minipage}{\linewidth}
 		\centering
 		\includegraphics[width=1\linewidth]{pics/lfsr.pdf}
-		\captionof{figure}[lfsr]{Abbildung eines Fibonacci-LFSR, angelehnt an \cite{fox2008linear}}
+		\captionof{figure}[lfsr]{Abbildung eines Fibonacci-LFSR, angelehnt an \cite{LFSRWiki}}
 		\label{fig:lfsr}
 	\end{minipage}
 	\vspace{1em}
@@ -199,7 +199,7 @@
 	\label{sec:icdesign}
 	In diesem Kapitel wird der \acs{IC} Entwurf unseres Reaktionsspiels entstehen. Durch die Simulation des Designs werden wir die Funktionalität des Reaktionsspiels überprüfen und abschließend ein Layout erstellen, das für die Fertigung des \ac{IC}s im Rahmen des Tiny-Tapeout-Projekts verwendet werden kann.
 	\subsection{Das Reaktionsspiel}
-	Um den Schaltkreis genau definieren zu können, muss vorab die exakte Funktionsweise des Reaktionsspiels definiert werden. Das Spiel wird ausgelegt für zwei Spieler. Jeder Spieler hat zwei Knöpfe als Eingabemöglichkeit und es gibt einen zusätzlichen Startknopf. Die insgesamt fünf Knöpfe werden als Eingangssignale in den von uns entwickelten \acs{IC} übermittelt. Als Interface für die Kommunikation mit dem Benutzer wird die auf dem Evaluationsboard von Tiny-Tapeout verbaute 7-Segment-Anzeige verwendet, welches in Kapitel 3.2 von Timo Winklbauer eingeführt wurde. Dadurch ergibt sich das in Abbildung \ref{fig:gameDesign} dargestellte Design für das Reaktionsspiel.
+	Um den Schaltkreis genau definieren zu können, muss vorab die exakte Funktionsweise des Reaktionsspiels definiert werden. Das Spiel wird ausgelegt für zwei Spieler. Jeder Spieler hat zwei Knöpfe als Eingabemöglichkeit und es gibt einen zusätzlichen Startknopf. Die insgesamt fünf Knöpfe werden als Eingangssignale in den von uns entwickelten \acs{IC} übermittelt. Als Interface für die Kommunikation mit dem Benutzer wird die auf dem Evaluationsboard von Tiny-Tapeout verbaute 7-Segment-Anzeige verwendet.\cite{timoEval} Dadurch ergibt sich das in Abbildung \ref{fig:gameDesign} dargestellte Design für das Reaktionsspiel.
 	
 	\vspace{1em}
 	\begin{minipage}{\linewidth}
@@ -248,7 +248,7 @@
 	Nachdem die grundlegenden Funktionen des \acs{IC}s im vorherigen Kapitel definiert wurden, kann der Entwurf auf Register-Transfer-Ebene beginnen. Der Prozess des Entwurfs durchläuft mehrere Schritte. Zuerst wird der Algorithmus anhand einer einfachen Beschreibungssprache definiert. Danach werden die Zustände des Algorithmus in einem Zustandsübergangsdiagramm modelliert, sodass die Überführung in eine Hardwarebeschreibungssprache (hier \ac{VHDL}) im nächsten Schritt vereinfacht wird. Zuletzt wird das Programm synthetisiert und simuliert. Auf den Entwurf des Algorithmus wird in dieser Stelle nicht tiefer eingegangen, da die Funktionsweise des Schaltkreises in den Schritten des Zustandsübergangsdiagramms und der Überführung in \ac{VHDL} klar wird.
 	
 	\subsubsection{Zufallsgenerierung}
-	Für die Zufallsgenerierung wird, wie im Kapitel \ref{sec:lfsr} eingeführt, ein 8-bit linear rückgekoppeltes Schieberegister verwendet. Als Bereich für die zufällige Wartezeit haben wir eine Zeit zwischen 0,5 und 5 Sekunden definiert. Nach Formel \ref{eq:clkCount} kann abhängig von der Taktfrequenz des Evaluationsboards die Anzahl der Takte ausgerechnet werden, welche mindestens bzw. maximal gewartet werden dürfen um in diesem Bereich zu bleiben. Wie in Kapitel 3.2 aus der Ausarbeitung von Timo Winklbauer eingeführt, ist die Taktfrequenz des Evaluationsboards einstellbar. Wir haben für unser Projekt eine Taktfrequenz von 25 Kilohertz festgelegt. Daher ergibt sich für die zufällige Wartezeit von 0,5 Sekunden folgende Taktanzahl: $$cnt_{min} = 25.000 * 0.5 = 12.500$$
+	Für die Zufallsgenerierung wird, wie im Kapitel \ref{sec:lfsr} eingeführt, ein 8-bit linear rückgekoppeltes Schieberegister verwendet. Als Bereich für die zufällige Wartezeit haben wir eine Zeit zwischen 0,5 und 5 Sekunden definiert. Nach Formel \ref{eq:clkCount} kann abhängig von der Taktfrequenz des Evaluationsboards die Anzahl der Takte ausgerechnet werden, welche mindestens bzw. maximal gewartet werden dürfen um in diesem Bereich zu bleiben. Die Taktfrequenz des Evaluationsboards einstellbar.\cite{timoEval} Wir haben für unser Projekt eine Taktfrequenz von 25 Kilohertz festgelegt. Daher ergibt sich für die zufällige Wartezeit von 0,5 Sekunden folgende Taktanzahl: $$cnt_{min} = 25.000 * 0.5 = 12.500$$
 	Die maximale Anzahl der Takte lässt sich wie folgt berechnen: $$cnt_{max} = 25.000 * 5 = 125.000$$
 	Für den Zähler werden also 17-Bit benötigt, um den Wertebereich bis 125.000 darstellen zu können. Damit mindestens eine halbe Sekunde Wartezeit entsteht, wird der Zähler mit der Bitfolge $0 0011 0001 0000 0000(12.544)$ initialisiert, was in etwa der halben Sekunde entspricht. Für die zufällige Wartezeit werden die drei niedrigsten Bits des \acs{LFSR} für die drei höherwertigsten bits des Zählers verwendet, wie in Abbildung \ref{fig:random} dargestellt ist.
 	
@@ -381,8 +381,7 @@ END ALGORITHMUS;
 
 	Für die Simulation mit einem \ac{FPGA} wird das Zybo Zynq-7000 ARM/FPGA SoC Trainer Board \cite{zyboBoard} verwendet. Der Code für den \acs{IC} musste an die Schnittstellen des Boards angepasst werden. Das Reaktionsspiel auf dem \ac{FPGA} wurde im Abschluss-Kolloquium vorgeführt. Leider sind hierbei keine Bildaufnahmen dokumentiert worden.
 	\subsection{Gatter-Ebene, Verdrahtung und Platzierung}
-	Auf Gatter-Ebene und für die Verdrahtung und Platzierung werden die Aufgaben von Tiny-Tapout abgenommen. Damit dies möglich ist, muss ein Github Projekt angelegt werden, welches sich an einer Vorlage orientiert. In der Projekt-Vorlage wurden Github-Actions angelegt, zur Validierung des Schaltkreises. Wenn alle Tests bestehen, resultiert eine gds-2 Datei. Die einzelnen Schritte bis hin zu dem gds Format werden in Kapitel \cite{saschaGDS} erklärt. 
-%	todo sacha zitieren
+	Auf Gatter-Ebene und für die Verdrahtung und Platzierung werden die Aufgaben von Tiny-Tapout abgenommen. Damit dies möglich ist, muss ein Github Projekt angelegt werden, welches sich an einer Vorlage orientiert. In der Projekt-Vorlage wurden Github-Actions angelegt, zur Validierung des Schaltkreises. Wenn alle Tests bestehen, resultiert eine gds-2 Datei\cite{saschaGDS}.
 	Da Tiny-Tapeout ausschließlich Verilog als Hardwarebeschreibungssprache akzeptiert, mussten unsere \acs{VHDL}-Dateien mithilfe des Tools yosys\cite{yosys} zu gültigem Verilog Code konvertiert werden. In unserem aktuellen Stand, wurde der Verilog Algorithmus von den Github-Actions akzeptiert, wie in Abbildung \ref{fig:ttGit} zu sehen ist. Vor der Einreichung bei Tiny-Tapeout, muss der konvertierte Code für den Algorithmus erneut auf Richtigkeit überprüft werden.
 	
 	\vspace{1em}
