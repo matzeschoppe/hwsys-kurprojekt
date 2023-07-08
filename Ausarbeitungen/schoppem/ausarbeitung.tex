@@ -127,7 +127,7 @@
 	\section{Einleitung}
 	\label{sec:einleitung}
 	\subsection{Motivation}
-	In dieser Ausarbeitung liegt der Fokus auf der Entwicklung eines eigenen \acp{IC} mithilfe des Tiny-Tapeout-Projekts\cite{TT}. Der Prozess des \ac{IC}-Designs ist äußerst komplex und erfordert spezialisierte Kenntnisse sowie teure Ausrüstung und Ressourcen. Das Tiny-Tapeout-Projekt hat es geschafft, ein besonderes Konzept zu entwickeln, das es selbst Anfängern ermöglicht, ihre eigenen \ac{IC}-Designs zu realisieren. Es bietet eine kostengünstige Möglichkeit, ein eigenen \ac{IC} fertigen zu lassen und eröffnet somit neue Möglichkeiten für kreative Ideen und individuelle Schaltungen.
+	In dieser Ausarbeitung liegt der Fokus auf der Entwicklung eines eigenen \acp{IC} mithilfe des Tiny-Tapeout-Projekts\cite{TT}. Der Prozess des \ac{IC}-Designs ist äußerst komplex und erfordert spezialisierte Kenntnisse sowie teure Ausrüstung und Ressourcen. Das Tiny-Tapeout-Projekt hat es geschafft, ein besonderes Konzept zu entwickeln, dass selbst Anfängern ermöglicht, ihre eigenen \ac{IC}-Designs zu realisieren. Es bietet eine kostengünstige Möglichkeit, ein eigenen \ac{IC} fertigen zu lassen und eröffnet somit neue Möglichkeiten für kreative Ideen und individuelle Schaltungen.
 	Das Ziel der Arbeit besteht darin, ein eigenes \ac{IC}-Design für ein Reaktionsspiel zu entwerfen und zu simulieren. Hierbei wird darauf geachtet, dass maximal 500 Logikgatter und ausschließlich die Ein- und Ausgänge des Tiny-Tapeout Evaluationsboards für die Umsetzung benötigt werden. Durch die Realisierung dieses Projekts sollen grundlegende Kenntnisse im IC-Design erlangt und praktische Erfahrungen in der Entwicklung von elektronischen Schaltungen gesammelt werden. 
 	Dieses Projekt wird in drei seperaten Ausarbeitungen unterteilt. Der Prozess des IC-Designs, verschiedene Tools von Tiny-Tapeout und der Schaltkreisentwurf des Reaktionsspiels werden jeweils von Timo Winklbauer, Sascha Binkert und Mathias Schoppe abgedeckt.
 	Dieser Teil der Ausarbeitung behandelt Aspekte, welche für das Vorhaben der konkreten Umsetzung zu beachten sind und bezieht sich dabei auf den Entwurf des Reaktionsspiels.
@@ -197,7 +197,7 @@
 	%Implementierung + Validierung
 	\section{Schaltkreis Entwurf} %
 	\label{sec:icdesign}
-	In diesem Kapitel wird der \acs{IC} Entwurf unseres Reaktionsspiels entstehen. Durch die Simulation des Designs werden wir die Funktionalität des Reaktionsspiels überprüfen und abschließend ein Layout erstellen, das für die Fertigung des \ac{IC}s im Rahmen des Tiny-Tapeout-Projekts verwendet werden kann.
+	In diesem Kapitel wird die Entstehung des \acs{IC}-Entwurfs unseres Reaktionsspiels erläutert. Durch die Simulation des Designs werden wir die Funktionalität des Reaktionsspiels überprüfen und abschließend ein Layout erstellen, das für die Fertigung des \ac{IC}s im Rahmen des Tiny-Tapeout-Projekts verwendet werden kann.
 	\subsection{Das Reaktionsspiel}
 	Um den Schaltkreis genau definieren zu können, muss vorab die exakte Funktionsweise des Reaktionsspiels definiert werden. Das Spiel wird ausgelegt für zwei Spieler. Jeder Spieler hat zwei Knöpfe als Eingabemöglichkeit und es gibt einen zusätzlichen Startknopf. Die insgesamt fünf Knöpfe werden als Eingangssignale in den von uns entwickelten \acs{IC} übermittelt. Als Interface für die Kommunikation mit dem Benutzer wird die auf dem Evaluationsboard von Tiny-Tapeout verbaute 7-Segment-Anzeige verwendet.\cite{timoEval} Dadurch ergibt sich das in Abbildung \ref{fig:gameDesign} dargestellte Design für das Reaktionsspiel.
 	
