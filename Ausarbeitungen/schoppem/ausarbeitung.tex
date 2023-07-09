@@ -210,7 +210,7 @@
 	\end{minipage}
 	\vspace{1em}
 	
-	Die Leuchtdioden der 7-Segment-Anzeige werden für die Visualisierung drei verschiedener Zustände verwendet, wie in \ref{tab:7SegStates} dargestellt.
+	Die Leuchtdioden der 7-Segment-Anzeige werden für die Visualisierung drei verschiedener Zustände verwendet, wie in Tabelle \ref{tab:7SegStates} dargestellt.
 	
 	
 	\vspace{1em}
@@ -248,7 +248,7 @@
 	Nachdem die grundlegenden Funktionen des \acs{IC}s im vorherigen Kapitel definiert wurden, kann der Entwurf auf Register-Transfer-Ebene beginnen. Der Prozess des Entwurfs durchläuft mehrere Schritte. Zuerst wird der Algorithmus anhand einer einfachen Beschreibungssprache definiert. Danach werden die Zustände des Algorithmus in einem Zustandsübergangsdiagramm modelliert, sodass die Überführung in eine Hardwarebeschreibungssprache (hier \ac{VHDL}) im nächsten Schritt vereinfacht wird. Zuletzt wird das Programm synthetisiert und simuliert. Auf den Entwurf des Algorithmus wird in dieser Stelle nicht tiefer eingegangen, da die Funktionsweise des Schaltkreises in den Schritten des Zustandsübergangsdiagramms und der Überführung in \ac{VHDL} klar wird.
 	
 	\subsubsection{Zufallsgenerierung}
-	Für die Zufallsgenerierung wird, wie im Kapitel \ref{sec:lfsr} eingeführt, ein 8-bit linear rückgekoppeltes Schieberegister verwendet. Als Bereich für die zufällige Wartezeit haben wir eine Zeit zwischen 0,5 und 5 Sekunden definiert. Nach Formel \ref{eq:clkCount} kann abhängig von der Taktfrequenz des Evaluationsboards die Anzahl der Takte ausgerechnet werden, welche mindestens bzw. maximal gewartet werden dürfen um in diesem Bereich zu bleiben. Die Taktfrequenz des Evaluationsboards einstellbar.\cite{timoEval} Wir haben für unser Projekt eine Taktfrequenz von 25 Kilohertz festgelegt. Daher ergibt sich für die zufällige Wartezeit von 0,5 Sekunden folgende Taktanzahl: $$cnt_{min} = 25.000 * 0.5 = 12.500$$
+	Für die Zufallsgenerierung wird, wie im Kapitel \ref{sec:lfsr} eingeführt, ein 8-bit linear rückgekoppeltes Schieberegister verwendet. Als Bereich für die zufällige Wartezeit haben wir eine Zeit zwischen 0,5 und 5 Sekunden definiert. Nach Formel \ref{eq:clkCount} kann abhängig von der Taktfrequenz des Evaluationsboards die Anzahl der Takte ausgerechnet werden, welche mindestens bzw. maximal gewartet werden dürfen um in diesem Bereich zu bleiben. Die Taktfrequenz des Evaluationsboards ist einstellbar.\cite{timoEval} Wir haben für unser Projekt eine Taktfrequenz von 25 Kilohertz festgelegt. Daher ergibt sich für die zufällige Wartezeit von 0,5 Sekunden folgende Taktanzahl: $$cnt_{min} = 25.000 * 0.5 = 12.500$$
 	Die maximale Anzahl der Takte lässt sich wie folgt berechnen: $$cnt_{max} = 25.000 * 5 = 125.000$$
 	Für den Zähler werden also 17-Bit benötigt, um den Wertebereich bis 125.000 darstellen zu können. Damit mindestens eine halbe Sekunde Wartezeit entsteht, wird der Zähler mit der Bitfolge $0 0011 0001 0000 0000(12.544)$ initialisiert, was in etwa der halben Sekunde entspricht. Für die zufällige Wartezeit werden die drei niedrigsten Bits des \acs{LFSR} für die drei höherwertigsten bits des Zählers verwendet, wie in Abbildung \ref{fig:random} dargestellt ist.
 	
@@ -303,7 +303,7 @@
 		\item \textbf{State\textunderscore waitRndInit:} Setzt den Zähler des Timers auf einen zufälligen Wert, sodass nach Formel \ref{eq:clkCount} eine Zeit zwischen 0.5-5 Sekunden gewartet wird
 		\item \textbf{State\textunderscore waitRnd:} Dekrementiert den Zähler bei jedem Clock-Zyklus. Währenddessen wird geprüft, ob ein Spieler einen seiner Knöpfe zu früh betätigt. Falls ja, wird direkt der Gewinner angezeigt. Sonst leuchtet nach Ablauf der Zeit entweder das linke oder rechte Segment auf 
 		\item \textbf{State\textunderscore setRightLED:} Das rechte Segment leuchtet und es wird auf Knopfdruck von einem der Spieler gewartet, sodass der Gewinner ermittelt werden kann
-		\item \textbf{State\textunderscore setLeftLED:} Das link Segment leuchtet und es wird auf Knopfdruck von einem der Spieler gewartet, sodass der Gewinner ermittelt werden kann
+		\item \textbf{State\textunderscore setLeftLED:} Das linke Segment leuchtet und es wird auf Knopfdruck von einem der Spieler gewartet, sodass der Gewinner ermittelt werden kann
 		\item \textbf{State\textunderscore p1Won:} Spieler 1 hat das Spiel gewonnen, das bedeutet die linke Hälfte der 7-Segment-Anzeige leuchtet auf. Anschließend wird auf ein erneutes drücken des Start-Knopfes gewartet
 		\item \textbf{State\textunderscore p2Won:} Spieler 2 hat das Spiel gewonnen, das bedeutet die rechte Hälfte der 7-Segment-Anzeige leuchtet auf. Anschließend wird auf ein erneutes drücken des Start-Knopfes gewartet
 	\end{itemize}
