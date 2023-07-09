@@ -12,3 +12,7 @@ tt04-reaction-game-main: Enthält das Repository für die Abgabe bei Tiny-Tapeou
 Hardwarebeschreibung_Pseudocode.txt: Enthält den ursprünglichen Algorithmus in Hardwarebeschreibungssprache
 full_state_transition_diagram.png: Zustandsübergangsdiagramm für die Algorithmus Entity
 
+## Links zu den Github-Repositories
+https://github.com/matzeschoppe/hwsys-kurprojekt
+
+https://github.com/OSDungen/tt04-reaction-game
